@@ -54,11 +54,8 @@ namespace UnityFinger
 
 		void Awake()
 		{
-			#if UNITY_EDITOR
 			input = new EditorInput();
-			#else
-			input = new MobileInput();
-			#endif
+			// input = new MobileInput();
 			observers = new List<IObserver>();
 		}
 
