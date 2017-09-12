@@ -4,16 +4,16 @@ using UnityEngine.EventSystems;
 
 namespace UnityFinger
 {
-	/// <summary>
-	/// Use as the container of input informations at IObserver
-	/// </summary>
-	public interface IScreenInput
-	{
-		int FingerCount { get; }
+    /// <summary>
+    /// Use as the container of input informations at IObserver
+    /// </summary>
+    public interface IScreenInput
+    {
+        int FingerCount { get; }
 
-		Vector2 GetPosition();
+        Vector2 GetPosition();
 
-		Vector2 GetSecondPosition();
-	}
-	
+        Vector2 GetSecondPosition();
+    }
+
 }

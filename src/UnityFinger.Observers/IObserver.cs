@@ -3,22 +3,22 @@ using System.Collections.Generic;
 
 namespace UnityFinger.Observers
 {
-	public enum Result
-	{
-		None,
-		InAction
-	}
+    public enum Result
+    {
+        None,
+        InAction
+    }
 
-	public interface ITimer
-	{
-		float ElapsedTime { get; }
-	}
+    public interface ITimer
+    {
+        float ElapsedTime { get; }
+    }
 
     public interface IObserver
-	{
-		int Priority { get; }
+    {
+        int Priority { get; }
 
-		IEnumerator<Result> GetObserver(IScreenInput fingerInput, ITimer timer);
-	}
+        IEnumerator<Result> GetObserver(IScreenInput fingerInput, ITimer timer);
+    }
 }
 

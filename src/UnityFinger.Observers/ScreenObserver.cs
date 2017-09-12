@@ -12,26 +12,26 @@ namespace UnityFinger
 
 namespace UnityFinger.Observers
 {
-	public class ScreenObserver : IObserver
-	{
-		IScreenListener listener;
+    public class ScreenObserver : IObserver
+    {
+        IScreenListener listener;
 
-		public ScreenObserver(IScreenListener listener)
-		{
-			this.listener = listener;
-		}
+        public ScreenObserver(IScreenListener listener)
+        {
+            this.listener = listener;
+        }
 
-		#region IFingerObserver implementation
+        #region IFingerObserver implementation
 
-		public int Priority { get { return 0; } }
+        public int Priority { get { return 0; } }
 
-		public IEnumerator<Result> GetObserver(IScreenInput fingerInput, ITimer timer)
-		{
-			listener.OnScreen(fingerInput.GetPosition());
-			yield break;
-		}
+        public IEnumerator<Result> GetObserver(IScreenInput fingerInput, ITimer timer)
+        {
+            listener.OnScreen(fingerInput.GetPosition());
+            yield break;
+        }
 
-		#endregion
-	}
+        #endregion
+    }
 }
 

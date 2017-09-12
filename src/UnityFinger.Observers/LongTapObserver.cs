@@ -13,58 +13,54 @@ namespace UnityFinger
 namespace UnityFinger.Observers
 {
     public class LongTapObserver : IObserver
-	{
-		private const float LongTapDuration = 0.6f;
-		private const float LongTapDistance = 0.05f;
-		private const float LongTapDistanceSqr = LongTapDistance * LongTapDistance;
+    {
+        private const float LongTapDuration = 0.6f;
+        private const float LongTapDistance = 0.05f;
+        private const float LongTapDistanceSqr = LongTapDistance * LongTapDistance;
 
-		ILongTapListener listener;
+        ILongTapListener listener;
 
-		public LongTapObserver(ILongTapListener listener)
-		{
-			this.listener = listener;
-		}
+        public LongTapObserver(ILongTapListener listener)
+        {
+            this.listener = listener;
+        }
 
-		#region IObserver implementation
+        #region IObserver implementation
 
-		public int Priority { get { return 200; } }
+        public int Priority { get { return 200; } }
 
-		public IEnumerator<Result> GetObserver(IScreenInput fingerInput, ITimer timer)
-		{
-			var origin = fingerInput.GetPosition();
+        public IEnumerator<Result> GetObserver(IScreenInput fingerInput, ITimer timer)
+        {
+            var origin = fingerInput.GetPosition();
 
-			while (fingerInput.FingerCount > 0) {
-				if (fingerInput.FingerCount > 1) {
-					yield break;
-				}
+            while (fingerInput.FingerCount > 0) {
+                if (fingerInput.FingerCount > 1) {
+                    yield break;
+                }
 
-				var secondPosition = fingerInput.GetPosition();
-				if ((secondPosition - origin).magnitude > LongTapDistance) {
-					yield break;
-				}
+                var secondPosition = fingerInput.GetPosition();
+                if ((secondPosition - origin).magnitude > LongTapDistance) {
+                    yield break;
+                }
 
-				if (timer.ElapsedTime > LongTapDuration) {
-					break;
-				} else {
-					yield return Result.None;
-				}
-			}
+                if (timer.ElapsedTime > LongTapDuration) {
+                    break;
+                } else {
+                    yield return Result.None;
+                }
+            }
 
-			if (fingerInput.FingerCount == 0) {
-				yield break;
-			}
+            if (fingerInput.FingerCount == 0) {
+                yield break;
+            }
 
-			var currentPosition = fingerInput.GetPosition();
+            var currentPosition = fingerInput.GetPosition();
 
-			listener.OnLongTap(currentPosition);
-			yield return Result.InAction;
+            listener.OnLongTap(currentPosition);
+            yield return Result.InAction;
+        }
 
-//			while (fingerInput.FingerCount > 0) {
-//				yield return Result.None;
-//			}
-		}
-
-		#endregion
-	}
+        #endregion
+    }
 }
 
