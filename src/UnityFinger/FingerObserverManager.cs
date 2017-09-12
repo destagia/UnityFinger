@@ -1,28 +1,11 @@
 ﻿using UnityEngine;
-using UnityEngine.Events;
 using System.Collections.Generic;
-using UnityFinger;
 using UnityFinger.Observers;
 
 namespace UnityFinger
 {
-	public class FingerSupervisor : MonoBehaviour, ITimer
+	public class FingerObserverSupervisor : ITimer
 	{
-		private static FingerSupervisor instance;
-		public static FingerSupervisor Instance
-		{
-			get {
-				if (instance == null || instance.gameObject == null) {
-					var fingerManagerObject = Object.FindObjectOfType<FingerSupervisor>();
-					if (fingerManagerObject == null) {
-						var gameObject = new GameObject("FingerSupervisor");
-						instance = gameObject.AddComponent<FingerSupervisor>();
-					}
-				}
-				return instance;
-			}
-		}
-
 		private ScreenInputBase input;
 		private List<IObserver> observers;
 
@@ -32,7 +15,7 @@ namespace UnityFinger
 		/// <summary>
 		/// Observing coroutines
 		/// </summary>
-		private List<IEnumerator<Result>> observerCoroutines = new List<IEnumerator<Result>>();
+		private List<IEnumerator<Result>> observerCoroutines;
 
 		/// <summary>
 		/// If the enumerator return Result.InAction, it is being focus on
@@ -50,16 +33,14 @@ namespace UnityFinger
 			observers.Remove(observer);
 		}
 
-		#region Unity Callbacks
-
-		void Awake()
+		public FingerObserverSupervisor(ScreenInputBase input)
 		{
-			input = new EditorInput();
-			// input = new MobileInput();
+            this.input = input;
 			observers = new List<IObserver>();
-		}
+            observerCoroutines = new List<IEnumerator<Result>>();
+        }
 
-		void Update()
+		public void Update()
 		{
 			input.Update();
 
@@ -93,8 +74,6 @@ namespace UnityFinger
 				observerCoroutine.Dispose();
 			}
 		}
-
-		#endregion
 
 		private bool OnEvent()
 		{

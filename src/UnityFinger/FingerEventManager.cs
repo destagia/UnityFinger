@@ -5,7 +5,7 @@ using UnityFinger.Observers;
 
 namespace UnityFinger
 {
-	public class FingerManager : MonoBehaviour, IScreenListener, ITapListener, IDragListener, IFlickListener, ITwoFingersListener, ILongTapListener, IPinchListener
+	public class FingerEventManager : IScreenListener, ITapListener, IDragListener, IFlickListener, ITwoFingersListener, ILongTapListener, IPinchListener
 	{
 		void IScreenListener.OnScreen(Vector2 position)
 		{
@@ -142,47 +142,36 @@ namespace UnityFinger
 			}
 		}
 
-		private static FingerManager instance;
-		public static FingerManager Instance
+        readonly FingerObserverSupervisor supervisor;
+
+        readonly ScreenObserver screenObserver;
+        readonly TapObserver tapObserver;
+        readonly FlickObserver flickObserver;
+        readonly DragObserver dragObserver;
+        readonly DragObserver ignoreOthersDragObserver;
+        readonly TwoFingersTapObserver twoFingersTapObserver;
+        readonly LongTapObserver longTapObserver;
+        readonly PinchObserver pinchObserver;
+
+        readonly PositionEvent onScreen;
+        readonly PositionEvent onTap;
+        readonly FlickEvent onFlick;
+        readonly DragEvent onDragStart;
+        readonly DragEvent onDrag;
+        readonly DragEvent onDragEnd;
+        readonly CompositeEvent dragEvents;
+        readonly CompositeEvent ignoreOthersDragEvents;
+        readonly TwoFingersEvent onTwoFingersTap;
+        readonly PositionEvent onLongTap;
+        readonly PinchEvent onPinchStart;
+        readonly PinchEvent onPinch;
+        readonly VoidEvent onPinchEnd;
+        readonly CompositeEvent pinchEvents;
+
+		public FingerEventManager(FingerObserverSupervisor supervisor)
 		{
-			get {
-				if (instance == null || instance.gameObject == null) {
-					var fingerManagerObject = Object.FindObjectOfType<FingerManager>();
-					if (fingerManagerObject == null) {
-						var gameObject = new GameObject("FingerManager");
-						instance = gameObject.AddComponent<FingerManager>();
-					}
-				}
-				return instance;
-			}
-		}
+            this.supervisor = supervisor;
 
-		private ScreenObserver screenObserver;
-		private TapObserver tapObserver;
-		private FlickObserver flickObserver;
-		private DragObserver dragObserver;
-		private DragObserver ignoreOthersDragObserver;
-		private TwoFingersTapObserver twoFingersTapObserver;
-		private LongTapObserver longTapObserver;
-		private PinchObserver pinchObserver;
-
-		private PositionEvent onScreen;
-		private PositionEvent onTap;
-		private FlickEvent onFlick;
-		private DragEvent onDragStart;
-		private DragEvent onDrag;
-		private DragEvent onDragEnd;
-		private CompositeEvent dragEvents;
-		private CompositeEvent ignoreOthersDragEvents;
-		private TwoFingersEvent onTwoFingersTap;
-		private PositionEvent onLongTap;
-		private PinchEvent onPinchStart;
-		private PinchEvent onPinch;
-		private VoidEvent onPinchEnd;
-		private CompositeEvent pinchEvents;
-
-		private FingerManager()
-		{
 			onScreen = new PositionEvent();
 			onTap = new PositionEvent();
 			onFlick = new FlickEvent();
@@ -211,14 +200,14 @@ namespace UnityFinger
 		private void RegisterObserver(ICountableEvent eventBase, IObserver target)
 		{
 			if (eventBase.ListenersCount == 0) {
-				FingerSupervisor.Instance.AddObserver(target);
+                supervisor.AddObserver(target);
 			}
 		}
 
 		private void UnregisterObserver(ICountableEvent eventBase, IObserver target)
 		{
 			if (eventBase.ListenersCount == 0) {
-				FingerSupervisor.Instance.RemoveObserver(target);
+                supervisor.RemoveObserver(target);
 			}
 		}
 

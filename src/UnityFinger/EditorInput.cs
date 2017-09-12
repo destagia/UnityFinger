@@ -1,10 +1,12 @@
 ﻿using UnityEngine;
 using System;
-using System.Collections.Generic;
 
 namespace UnityFinger
 {
-	class EditorInput : ScreenInputBase
+    /// <summary>
+    /// Unity Editor input
+    /// </summary>
+	public class EditorInput : ScreenInputBase
 	{
 		private enum State
 		{

@@ -4,7 +4,7 @@ using UnityEngine.EventSystems;
 
 namespace UnityFinger
 {
-	class MobileInput : ScreenInputBase
+	public class MobileInput : ScreenInputBase
 	{
 		private List<int> removeFingerIds = new List<int>();
 		private List<int> screenFingerIds = new List<int>();

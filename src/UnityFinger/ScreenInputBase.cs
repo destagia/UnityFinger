@@ -18,7 +18,7 @@ namespace UnityFinger
 	/// but IScreenInput is used as the container of the input infomations.
 	/// The Function Update must be visible only for supervisor such as FingerManager.
 	/// </summary>
-	abstract class ScreenInputBase : IScreenInput
+	public abstract class ScreenInputBase : IScreenInput
 	{
 		private EventSystem eventSystem;
 		protected EventSystem EventSystem {
