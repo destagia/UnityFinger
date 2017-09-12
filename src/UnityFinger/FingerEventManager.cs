@@ -167,7 +167,7 @@ namespace UnityFinger
         readonly VoidEvent onPinchEnd;
         readonly CompositeEvent pinchEvents;
 
-        public FingerEventManager(FingerObserverSupervisor supervisor)
+        public FingerEventManager(FingerObserverSupervisor supervisor, IFingerObserverConfig config)
         {
             this.supervisor = supervisor;
 
@@ -187,13 +187,13 @@ namespace UnityFinger
             pinchEvents = new CompositeEvent(onPinchStart, onPinch, onPinchEnd);
 
             screenObserver = new ScreenObserver(this);
-            tapObserver = new TapObserver(this);
-            flickObserver = new FlickObserver(this);
-            dragObserver = new DragObserver(this, false);
-            ignoreOthersDragObserver = new DragObserver(this, true);
-            twoFingersTapObserver = new TwoFingersTapObserver(this);
-            longTapObserver = new LongTapObserver(this);
-            pinchObserver = new PinchObserver(this);
+            tapObserver = new TapObserver(config, this);
+            flickObserver = new FlickObserver(config, this);
+            dragObserver = new DragObserver(config, this, false);
+            ignoreOthersDragObserver = new DragObserver(config, this, true);
+            twoFingersTapObserver = new TwoFingersTapObserver(config, this);
+            longTapObserver = new LongTapObserver(config, this);
+            pinchObserver = new PinchObserver(config, this);
         }
 
         private void RegisterObserver(ICountableEvent eventBase, IObserver target)

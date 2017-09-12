@@ -26,14 +26,13 @@ namespace UnityFinger.Observers
 {
     public class TwoFingersTapObserver : IObserver
     {
-        private const float StartDuration = 0.05f;
-        private const float TwoFingersDuration = 0.25f;
-        private const float ReleaseDuration = 0.3f;
+        private readonly IFingerObserverConfig config;
 
-        ITwoFingersListener listener;
+        private readonly ITwoFingersListener listener;
 
-        public TwoFingersTapObserver(ITwoFingersListener listener)
+        public TwoFingersTapObserver(IFingerObserverConfig config, ITwoFingersListener listener)
         {
+            this.config = config;
             this.listener = listener;
         }
 
@@ -48,7 +47,7 @@ namespace UnityFinger.Observers
 
             // Wait until two fingers are on screen in time
             while (fingerInput.FingerCount > 0) {
-                if (timer.ElapsedTime > StartDuration) {
+                if (timer.ElapsedTime > config.TwoFingersTapStartDuration) {
                     yield break;
                 }
                 if (fingerInput.FingerCount == 2) {
@@ -64,7 +63,7 @@ namespace UnityFinger.Observers
 
             while (fingerInput.FingerCount == 2) {
                 twofingerInvoke = true;
-                if (timer.ElapsedTime > TwoFingersDuration) {
+                if (timer.ElapsedTime > config.TwoFingersTapDuration) {
                     yield break;
                 }
                 first = fingerInput.GetPosition();
@@ -77,7 +76,7 @@ namespace UnityFinger.Observers
             }
 
             while (fingerInput.FingerCount > 0) {
-                if (timer.ElapsedTime > ReleaseDuration) {
+                if (timer.ElapsedTime > config.TwoFingersTapReleaseDuration) {
                     yield break;
                 }
                 yield return Result.None;

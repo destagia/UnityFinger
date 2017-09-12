@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace UnityFinger.Observers
+namespace UnityFinger
 {
     public enum Result
     {

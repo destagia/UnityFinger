@@ -14,14 +14,14 @@ namespace UnityFinger.Observers
 {
     public class LongTapObserver : IObserver
     {
-        private const float LongTapDuration = 0.6f;
-        private const float LongTapDistance = 0.05f;
-        private const float LongTapDistanceSqr = LongTapDistance * LongTapDistance;
+        private readonly IFingerObserverConfig config;
+        private readonly ILongTapListener listener;
 
-        ILongTapListener listener;
+        private readonly float longTapDistanceSqr;
 
-        public LongTapObserver(ILongTapListener listener)
+        public LongTapObserver(IFingerObserverConfig config, ILongTapListener listener)
         {
+            this.config = config;
             this.listener = listener;
         }
 
@@ -39,11 +39,11 @@ namespace UnityFinger.Observers
                 }
 
                 var secondPosition = fingerInput.GetPosition();
-                if ((secondPosition - origin).magnitude > LongTapDistance) {
+                if ((secondPosition - origin).magnitude > config.LongTapDistance) {
                     yield break;
                 }
 
-                if (timer.ElapsedTime > LongTapDuration) {
+                if (timer.ElapsedTime > config.LongTapDuration) {
                     break;
                 } else {
                     yield return Result.None;

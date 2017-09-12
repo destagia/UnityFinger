@@ -26,13 +26,13 @@ namespace UnityFinger.Observers
 {
     public class FlickObserver : IObserver
     {
-        private const float FlickDuration = 0.15f;
-        private const float FlickDistance = 0.05f;
+        private readonly IFlickListener listener;
 
-        IFlickListener listener;
+        private readonly IFingerObserverConfig config;
 
-        public FlickObserver(IFlickListener listener)
+        public FlickObserver(IFingerObserverConfig config, IFlickListener listener)
         {
+            this.config = config;
             this.listener = listener;
         }
 
@@ -58,7 +58,7 @@ namespace UnityFinger.Observers
             }
 
             var direction = secondPosition - firstPosition;
-            if (direction.magnitude < FlickDistance) {
+            if (direction.magnitude < config.FlickDistance) {
                 yield break;
             }
 

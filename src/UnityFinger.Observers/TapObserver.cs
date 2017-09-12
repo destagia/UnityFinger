@@ -14,13 +14,13 @@ namespace UnityFinger.Observers
 {
     public class TapObserver : IObserver
     {
-        private const float TapDuration = 0.15f;
-        private const float TapDistance = 0.02f;
+        private readonly IFingerObserverConfig config;
 
-        ITapListener listener;
+        private readonly ITapListener listener;
 
-        public TapObserver(ITapListener listener)
+        public TapObserver(IFingerObserverConfig config, ITapListener listener)
         {
+            this.config = config;
             this.listener = listener;
         }
 
@@ -37,14 +37,14 @@ namespace UnityFinger.Observers
                     yield break;
                 }
                 var secondPosition = fingerInput.GetPosition();
-                if ((secondPosition - position).magnitude > TapDistance) {
+                if ((secondPosition - position).magnitude > config.TapDistance) {
                     yield break;
                 }
                 position = secondPosition;
                 yield return Result.None;
             }
 
-            if (timer.ElapsedTime > TapDuration) {
+            if (timer.ElapsedTime > config.TapDuration) {
                 yield break;
             }
 

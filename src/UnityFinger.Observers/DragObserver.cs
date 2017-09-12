@@ -29,11 +29,11 @@ namespace UnityFinger.Observers
 {
     public class DragObserver : IObserver
     {
-        private const float DragDuration = 0.15f;
-        private const float DragDistance = 0.05f;
-        private const float DragDistanceSqr = DragDistance * DragDistance;
+        private readonly float dragDistanceSqr;
 
-        IDragListener listener;
+        private readonly IDragListener listener;
+
+        private readonly IFingerObserverConfig config;
 
         /// <summary>
         /// if IgnoreOtherObservers is true, drag events will be fired
@@ -42,10 +42,13 @@ namespace UnityFinger.Observers
         /// </summary>
         readonly bool ignoreOtherObservers;
 
-        public DragObserver(IDragListener listener, bool ignoreOtherObservers)
+        public DragObserver(IFingerObserverConfig config, IDragListener listener, bool ignoreOtherObservers)
         {
+            this.config = config;
             this.listener = listener;
             this.ignoreOtherObservers = ignoreOtherObservers;
+
+            dragDistanceSqr = config.DragDistance * config.DragDistance;
         }
 
         #region IObserver implementation
@@ -66,10 +69,10 @@ namespace UnityFinger.Observers
 
                 if (fingerInput.FingerCount > 1) { yield break; }
 
-                if (ignoreOtherObservers || timer.ElapsedTime > DragDuration) {
+                if (ignoreOtherObservers || timer.ElapsedTime > config.DragDuration) {
                     prevPosition = currentPosition;
                     currentPosition = fingerInput.GetPosition();
-                    if ((currentPosition - origin).sqrMagnitude > DragDistanceSqr) {
+                    if ((currentPosition - origin).sqrMagnitude > dragDistanceSqr) {
                         if (!isInvoked) {
                             listener.OnDragStart(new DragInfo(prevPosition, currentPosition, currentPosition - origin));
                         }

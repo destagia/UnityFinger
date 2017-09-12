@@ -49,12 +49,13 @@ namespace UnityFinger.Observers
 {
     public class PinchObserver : IObserver
     {
-        private const float PinchStartDistance = 0.02f;
+        private readonly IFingerObserverConfig config;
 
-        IPinchListener listener;
+        private readonly IPinchListener listener;
 
-        public PinchObserver(IPinchListener listener)
+        public PinchObserver(IFingerObserverConfig config, IPinchListener listener)
         {
+            this.config = config;
             this.listener = listener;
         }
 
@@ -73,30 +74,46 @@ namespace UnityFinger.Observers
 
             // Wait until two fingers are on screen in time
             while (fingerInput.FingerCount > 0) {
-                if (fingerInput.FingerCount == 2) {
 
-                    startFirst = fingerInput.GetPosition();
-                    startSecond = fingerInput.GetSecondPosition();
-
-                    if (isFirstFrame) {
-                        isFirstFrame = false;
-                        firstStartFirst = startFirst;
-                        firstStartSecond = startSecond;
-                    }
-
-                    if ((startFirst - firstStartFirst).magnitude < PinchStartDistance || (startSecond - firstStartSecond).magnitude < PinchStartDistance) {
-                        yield return Result.None;
-                    } else {
-                        listener.OnPinchStart(new PinchInfo(firstStartFirst, firstStartSecond, startFirst, startSecond, firstStartFirst, firstStartSecond));
-                        yield return Result.InAction;
-                        break;
-                    }
-                } else if (fingerInput.FingerCount > 2) {
+                if (fingerInput.FingerCount > 2) {
                     yield break;
-                } else {
+                }
+
+                if (fingerInput.FingerCount < 2) {
                     yield return Result.None;
                 }
+
+                startFirst = fingerInput.GetPosition();
+                startSecond = fingerInput.GetSecondPosition();
+
+                if (isFirstFrame) {
+                    isFirstFrame = false;
+                    firstStartFirst = startFirst;
+                    firstStartSecond = startSecond;
+                }
+
+                var firstFingerMove = (startFirst - firstStartFirst).magnitude;
+                if (firstFingerMove < config.PinchStartDistance) {
+                    yield return Result.None;
+                }
+
+                var secondFingerMove = (startSecond - firstStartSecond).magnitude;
+                if (secondFingerMove < config.PinchStartDistance) {
+                    yield return Result.None;
+                }
+
+                listener.OnPinchStart(new PinchInfo(
+                    firstStartFirst,
+                    firstStartSecond,
+                    startFirst,
+                    startSecond,
+                    firstStartFirst,
+                    firstStartSecond));
+
+                break;
             }
+
+            yield return Result.InAction;
 
             Vector2 prevFirst = startFirst;
             Vector2 prevSecond = startSecond;
