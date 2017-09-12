@@ -6,7 +6,7 @@ using UnityEngine;
 
 namespace UnityFinger.Tests
 {
-    [TestFixture]
+    [TestFixture(TestName = "ScreenObserver")]
     class ScreenObserverTest : IScreenListener
     {
         TestInput input;
