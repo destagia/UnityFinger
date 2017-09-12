@@ -195,16 +195,16 @@ namespace UnityFinger
             pinchObserver = new PinchObserver(config, this);
         }
 
-        void RegisterObserver(ICountableEvent eventBase, IObserver target)
+        void RegisterObserver(ICountableEvent countableEvent, IObserver target)
         {
-            if (eventBase.ListenersCount == 0) {
+            if (countableEvent.ListenersCount == 0) {
                 supervisor.AddObserver(target);
             }
         }
 
-        void UnregisterObserver(ICountableEvent eventBase, IObserver target)
+        void UnregisterObserver(ICountableEvent countableEvent, IObserver target)
         {
-            if (eventBase.ListenersCount == 0) {
+            if (countableEvent.ListenersCount == 0) {
                 supervisor.RemoveObserver(target);
             }
         }

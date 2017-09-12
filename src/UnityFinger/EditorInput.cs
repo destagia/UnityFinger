@@ -23,18 +23,18 @@ namespace UnityFinger
 
         public override void Update()
         {
-            if (Input.GetMouseButton(0)) {
-                if (currentState == State.None) {
-                    if (!ScreenInput.IgnoreOverGameObject && EventSystem.IsPointerOverGameObject()) {
-                        currentState = State.UI;
-                    } else {
-                        currentState = State.Screen;
-                    }
-                }
-            } else {
+            if (!Input.GetMouseButton(0)) {
                 currentState = State.None;
+                return;
             }
 
+            if (currentState == State.None) {
+                if (!ScreenInput.IgnoreOverGameObject && EventSystem.IsPointerOverGameObject()) {
+                    currentState = State.UI;
+                } else {
+                    currentState = State.Screen;
+                }
+            }
         }
 
         public override Vector2 GetPosition()

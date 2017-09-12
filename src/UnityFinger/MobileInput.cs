@@ -70,6 +70,7 @@ namespace UnityFinger
             if (screenFingerIds.Count <= index) {
                 throw new System.InvalidOperationException(string.Format("There is no {0}'s finger on screen", index));
             }
+
             var fingerId = screenFingerIds[index];
             Touch? touch = null;
             foreach (var t in Input.touches) {
@@ -78,9 +79,11 @@ namespace UnityFinger
                     break;
                 }
             }
+
             if (!touch.HasValue) {
                 throw new System.ArgumentOutOfRangeException(string.Format("Finger id {0} is not in touches", fingerId));
             }
+
             return new Vector2(touch.Value.position.x / Screen.width, touch.Value.position.y / Screen.height);
         }
 

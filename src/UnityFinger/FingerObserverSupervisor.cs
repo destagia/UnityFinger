@@ -39,23 +39,7 @@ namespace UnityFinger
 
         public void Update()
         {
-            if (input.FingerCount > 0) {
-                if (isFirstOnScreen) {
-                    onScreenStartTime = Time.time;
-
-                    foreach (var observer in observerCoroutines) {
-                        observer.Dispose();
-                    }
-                    observerCoroutines.Clear();
-
-                    foreach (var observer in observers) {
-                        observerCoroutines.Add(observer.GetObserver(input, this));
-                    }
-
-                    isFirstOnScreen = false;
-                }
-                OnEvent();
-            } else {
+            if (input.FingerCount == 0) {
                 if (!OnEvent()) {
                     foreach (var observerCoroutine in observerCoroutines) {
                         observerCoroutine.Dispose();
@@ -65,7 +49,25 @@ namespace UnityFinger
                 }
 
                 isFirstOnScreen = true;
+                return;
             }
+
+            if (isFirstOnScreen) {
+                onScreenStartTime = Time.time;
+
+                foreach (var observer in observerCoroutines) {
+                    observer.Dispose();
+                }
+                observerCoroutines.Clear();
+
+                foreach (var observer in observers) {
+                    observerCoroutines.Add(observer.GetObserver(input, this));
+                }
+
+                isFirstOnScreen = false;
+            }
+
+            OnEvent();
         }
 
         void OnDestroy()
@@ -80,6 +82,7 @@ namespace UnityFinger
             if (selectedCoroutine != null) {
                 return selectedCoroutine.MoveNext();
             }
+
             var isAnyContinuing = false;
             foreach (var observer in observerCoroutines) {
                 if ((isAnyContinuing |= observer.MoveNext()) && observer.Current == Result.InAction) {
@@ -87,6 +90,7 @@ namespace UnityFinger
                     return true;
                 }
             }
+
             return isAnyContinuing;
         }
 

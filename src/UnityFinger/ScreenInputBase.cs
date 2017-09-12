@@ -26,6 +26,7 @@ namespace UnityFinger
                         eventSystemObj.AddComponent<StandaloneInputModule>();
                     }
                 }
+
                 return eventSystem;
             }
         }
