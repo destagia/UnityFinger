@@ -37,7 +37,7 @@ namespace UnityFinger
             onFlick.Invoke(info);
         }
 
-        void ITwoFingersListener.OnTwoFingersTap(TwoFingersInfo info)
+        void ITwoFingersListener.OnTwoFingersTap(TwoFingersTapInfo info)
         {
             onTwoFingersTap.Invoke(info);
         }
@@ -62,14 +62,14 @@ namespace UnityFinger
             onPinchEnd.Invoke();
         }
 
-        private interface ICountableEvent
+         interface ICountableEvent
         {
             int ListenersCount { get; }
         }
 
-        private class VoidEvent : UnityEvent, ICountableEvent
+         class VoidEvent : UnityEvent, ICountableEvent
         {
-            public int ListenersCount { private set; get; }
+            public int ListenersCount {  set; get; }
 
             new public void AddListener(UnityAction callback)
             {
@@ -84,9 +84,9 @@ namespace UnityFinger
             }
         }
 
-        private abstract class CountableEvent<T> : UnityEvent<T>, ICountableEvent
+         abstract class CountableEvent<T> : UnityEvent<T>, ICountableEvent
         {
-            public int ListenersCount { private set; get; }
+            public int ListenersCount {  set; get; }
 
             new public void AddListener(UnityAction<T> callback)
             {
@@ -101,29 +101,29 @@ namespace UnityFinger
             }
         }
 
-        private class FlickEvent : CountableEvent<FlickInfo>
+         class FlickEvent : CountableEvent<FlickInfo>
         {
         }
 
-        private class DragEvent : CountableEvent<DragInfo>
+         class DragEvent : CountableEvent<DragInfo>
         {
         }
 
-        private class TwoFingersEvent : CountableEvent<TwoFingersInfo>
+         class TwoFingersEvent : CountableEvent<TwoFingersTapInfo>
         {
         }
 
-        private class PositionEvent : CountableEvent<Vector2>
+         class PositionEvent : CountableEvent<Vector2>
         {
         }
 
-        private class PinchEvent : CountableEvent<PinchInfo>
+         class PinchEvent : CountableEvent<PinchInfo>
         {
         }
 
-        private class CompositeEvent : ICountableEvent
+         class CompositeEvent : ICountableEvent
         {
-            ICountableEvent[] events;
+             readonly ICountableEvent[] events;
 
             public CompositeEvent(params ICountableEvent[] events)
             {
@@ -141,31 +141,31 @@ namespace UnityFinger
             }
         }
 
-        readonly FingerObserverSupervisor supervisor;
+         readonly FingerObserverSupervisor supervisor;
 
-        readonly ScreenObserver screenObserver;
-        readonly TapObserver tapObserver;
-        readonly FlickObserver flickObserver;
-        readonly DragObserver dragObserver;
-        readonly DragObserver ignoreOthersDragObserver;
-        readonly TwoFingersTapObserver twoFingersTapObserver;
-        readonly LongTapObserver longTapObserver;
-        readonly PinchObserver pinchObserver;
+         readonly ScreenObserver screenObserver;
+         readonly TapObserver tapObserver;
+         readonly FlickObserver flickObserver;
+         readonly DragObserver dragObserver;
+         readonly DragObserver ignoreOthersDragObserver;
+         readonly TwoFingersTapObserver twoFingersTapObserver;
+         readonly LongTapObserver longTapObserver;
+         readonly PinchObserver pinchObserver;
 
-        readonly PositionEvent onScreen;
-        readonly PositionEvent onTap;
-        readonly FlickEvent onFlick;
-        readonly DragEvent onDragStart;
-        readonly DragEvent onDrag;
-        readonly DragEvent onDragEnd;
-        readonly CompositeEvent dragEvents;
-        readonly CompositeEvent ignoreOthersDragEvents;
-        readonly TwoFingersEvent onTwoFingersTap;
-        readonly PositionEvent onLongTap;
-        readonly PinchEvent onPinchStart;
-        readonly PinchEvent onPinch;
-        readonly VoidEvent onPinchEnd;
-        readonly CompositeEvent pinchEvents;
+         readonly PositionEvent onScreen;
+         readonly PositionEvent onTap;
+         readonly FlickEvent onFlick;
+         readonly DragEvent onDragStart;
+         readonly DragEvent onDrag;
+         readonly DragEvent onDragEnd;
+         readonly CompositeEvent dragEvents;
+         readonly CompositeEvent ignoreOthersDragEvents;
+         readonly TwoFingersEvent onTwoFingersTap;
+         readonly PositionEvent onLongTap;
+         readonly PinchEvent onPinchStart;
+         readonly PinchEvent onPinch;
+         readonly VoidEvent onPinchEnd;
+         readonly CompositeEvent pinchEvents;
 
         public FingerEventManager(FingerObserverSupervisor supervisor, IFingerObserverConfig config)
         {
@@ -196,14 +196,14 @@ namespace UnityFinger
             pinchObserver = new PinchObserver(config, this);
         }
 
-        private void RegisterObserver(ICountableEvent eventBase, IObserver target)
+         void RegisterObserver(ICountableEvent eventBase, IObserver target)
         {
             if (eventBase.ListenersCount == 0) {
                 supervisor.AddObserver(target);
             }
         }
 
-        private void UnregisterObserver(ICountableEvent eventBase, IObserver target)
+         void UnregisterObserver(ICountableEvent eventBase, IObserver target)
         {
             if (eventBase.ListenersCount == 0) {
                 supervisor.RemoveObserver(target);
@@ -294,13 +294,13 @@ namespace UnityFinger
             UnregisterObserver(onFlick, flickObserver);
         }
 
-        public void AddOnTwoFingerTapListener(UnityAction<TwoFingersInfo> action)
+        public void AddOnTwoFingerTapListener(UnityAction<TwoFingersTapInfo> action)
         {
             RegisterObserver(onTwoFingersTap, twoFingersTapObserver);
             onTwoFingersTap.AddListener(action);
         }
 
-        public void RemoveOnTwoFingerTapListener(UnityAction<TwoFingersInfo> action)
+        public void RemoveOnTwoFingerTapListener(UnityAction<TwoFingersTapInfo> action)
         {
             onTwoFingersTap.RemoveListener(action);
             UnregisterObserver(onTwoFingersTap, twoFingersTapObserver);

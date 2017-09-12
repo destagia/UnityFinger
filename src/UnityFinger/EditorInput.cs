@@ -8,14 +8,14 @@ namespace UnityFinger
     /// </summary>
     public class EditorInput : ScreenInputBase
     {
-        private enum State
+         enum State
         {
             None,
             UI,
             Screen
         }
 
-        private State currentState = State.None;
+         State currentState = State.None;
 
         public override int FingerCount {
             get { return currentState == State.Screen ? 1 : 0; }

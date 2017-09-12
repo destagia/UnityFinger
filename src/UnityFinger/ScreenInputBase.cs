@@ -20,7 +20,7 @@ namespace UnityFinger
     /// </summary>
     public abstract class ScreenInputBase : IScreenInput
     {
-        private EventSystem eventSystem;
+         EventSystem eventSystem;
         protected EventSystem EventSystem {
             get {
                 if (eventSystem == null || eventSystem.gameObject == null) {

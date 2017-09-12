@@ -6,7 +6,6 @@ namespace UnityFinger
     public struct FlickInfo
     {
         public readonly Vector2 origin;
-
         public readonly Vector2 direction;
 
         public FlickInfo(Vector2 origin, Vector2 direction)
@@ -26,9 +25,9 @@ namespace UnityFinger.Observers
 {
     public class FlickObserver : IObserver
     {
-        private readonly IFlickListener listener;
+         readonly IFlickListener listener;
 
-        private readonly IFingerObserverConfig config;
+         readonly IFingerObserverConfig config;
 
         public FlickObserver(IFingerObserverConfig config, IFlickListener listener)
         {

@@ -14,9 +14,9 @@ namespace UnityFinger.Observers
 {
     public class TapObserver : IObserver
     {
-        private readonly IFingerObserverConfig config;
+         readonly IFingerObserverConfig config;
 
-        private readonly ITapListener listener;
+         readonly ITapListener listener;
 
         public TapObserver(IFingerObserverConfig config, ITapListener listener)
         {

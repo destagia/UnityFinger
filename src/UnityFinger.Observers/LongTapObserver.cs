@@ -14,10 +14,8 @@ namespace UnityFinger.Observers
 {
     public class LongTapObserver : IObserver
     {
-        private readonly IFingerObserverConfig config;
-        private readonly ILongTapListener listener;
-
-        private readonly float longTapDistanceSqr;
+         readonly IFingerObserverConfig config;
+         readonly ILongTapListener listener;
 
         public LongTapObserver(IFingerObserverConfig config, ILongTapListener listener)
         {

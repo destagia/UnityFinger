@@ -4,12 +4,12 @@ using System.Collections.Generic;
 
 namespace UnityFinger
 {
-    public struct TwoFingersInfo
+    public struct TwoFingersTapInfo
     {
         public readonly Vector2 firstPosition;
         public readonly Vector2 secondPosition;
 
-        public TwoFingersInfo(Vector2 firstPosition, Vector2 secondPosition)
+        public TwoFingersTapInfo(Vector2 firstPosition, Vector2 secondPosition)
         {
             this.firstPosition = firstPosition;
             this.secondPosition = secondPosition;
@@ -18,7 +18,7 @@ namespace UnityFinger
 
     public interface ITwoFingersListener
     {
-        void OnTwoFingersTap(TwoFingersInfo info);
+        void OnTwoFingersTap(TwoFingersTapInfo info);
     }
 }
 
@@ -26,9 +26,9 @@ namespace UnityFinger.Observers
 {
     public class TwoFingersTapObserver : IObserver
     {
-        private readonly IFingerObserverConfig config;
+         readonly IFingerObserverConfig config;
 
-        private readonly ITwoFingersListener listener;
+         readonly ITwoFingersListener listener;
 
         public TwoFingersTapObserver(IFingerObserverConfig config, ITwoFingersListener listener)
         {
@@ -82,7 +82,7 @@ namespace UnityFinger.Observers
                 yield return Result.None;
             }
 
-            listener.OnTwoFingersTap(new TwoFingersInfo(first, second));
+            listener.OnTwoFingersTap(new TwoFingersTapInfo(first, second));
             yield return Result.InAction;
         }
 

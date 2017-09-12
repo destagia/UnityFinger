@@ -49,9 +49,9 @@ namespace UnityFinger.Observers
 {
     public class PinchObserver : IObserver
     {
-        private readonly IFingerObserverConfig config;
+         readonly IFingerObserverConfig config;
 
-        private readonly IPinchListener listener;
+         readonly IPinchListener listener;
 
         public PinchObserver(IFingerObserverConfig config, IPinchListener listener)
         {

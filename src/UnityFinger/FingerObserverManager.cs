@@ -6,21 +6,21 @@ namespace UnityFinger
 {
     public class FingerObserverSupervisor : ITimer
     {
-        private ScreenInputBase input;
-        private List<IObserver> observers;
+         ScreenInputBase input;
+         List<IObserver> observers;
 
-        private float onScreenStartTime;
-        private bool isFirstOnScreen;
+         float onScreenStartTime;
+         bool isFirstOnScreen;
 
         /// <summary>
         /// Observing coroutines
         /// </summary>
-        private List<IEnumerator<Result>> observerCoroutines;
+         List<IEnumerator<Result>> observerCoroutines;
 
         /// <summary>
         /// If the enumerator return Result.InAction, it is being focus on
         /// </summary>
-        private IEnumerator<Result> selectedCoroutine;
+         IEnumerator<Result> selectedCoroutine;
 
         public void AddObserver(IObserver observer)
         {
@@ -75,7 +75,7 @@ namespace UnityFinger
             }
         }
 
-        private bool OnEvent()
+         bool OnEvent()
         {
             if (selectedCoroutine != null) {
                 return selectedCoroutine.MoveNext();
@@ -96,7 +96,7 @@ namespace UnityFinger
 
         #endregion
 
-        private class ObserverComparer : IComparer<IObserver>
+         class ObserverComparer : IComparer<IObserver>
         {
             #region IComparer implementation
             public int Compare(IObserver x, IObserver y)
