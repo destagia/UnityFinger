@@ -6,9 +6,9 @@ namespace UnityFinger
 {
     public class MobileInput : ScreenInputBase
     {
-         List<int> removeFingerIds = new List<int>();
-         List<int> screenFingerIds = new List<int>();
-         List<int> uiFingerIds = new List<int>();
+        List<int> removeFingerIds = new List<int>();
+        List<int> screenFingerIds = new List<int>();
+        List<int> uiFingerIds = new List<int>();
 
         public override int FingerCount {
             get { return screenFingerIds.Count; }
@@ -45,7 +45,7 @@ namespace UnityFinger
             }
         }
 
-         bool ContainsInArray(Touch[] touches, int element)
+        bool ContainsInArray(Touch[] touches, int element)
         {
             foreach (var touch in touches) {
                 if (touch.fingerId == element) {
@@ -65,7 +65,7 @@ namespace UnityFinger
             return GetPositionByIndex(1);
         }
 
-         Vector2 GetPositionByIndex(int index)
+        Vector2 GetPositionByIndex(int index)
         {
             if (screenFingerIds.Count <= index) {
                 throw new System.InvalidOperationException(string.Format("There is no {0}'s finger on screen", index));

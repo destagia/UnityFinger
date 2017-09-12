@@ -26,9 +26,9 @@ namespace UnityFinger.Observers
 {
     public class TwoFingersTapObserver : IObserver
     {
-         readonly IFingerObserverConfig config;
+        readonly IFingerObserverConfig config;
 
-         readonly ITwoFingersListener listener;
+        readonly ITwoFingersListener listener;
 
         public TwoFingersTapObserver(IFingerObserverConfig config, ITwoFingersListener listener)
         {

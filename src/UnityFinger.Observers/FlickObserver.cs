@@ -25,9 +25,9 @@ namespace UnityFinger.Observers
 {
     public class FlickObserver : IObserver
     {
-         readonly IFlickListener listener;
+        readonly IFlickListener listener;
 
-         readonly IFingerObserverConfig config;
+        readonly IFingerObserverConfig config;
 
         public FlickObserver(IFingerObserverConfig config, IFlickListener listener)
         {

@@ -8,14 +8,14 @@ namespace UnityFinger
     /// </summary>
     public class EditorInput : ScreenInputBase
     {
-         enum State
+        enum State
         {
             None,
             UI,
             Screen
         }
 
-         State currentState = State.None;
+        State currentState = State.None;
 
         public override int FingerCount {
             get { return currentState == State.Screen ? 1 : 0; }
@@ -44,7 +44,7 @@ namespace UnityFinger
 
         public override Vector2 GetSecondPosition()
         {
-            throw new InvalidOperationException("Editor Input can not execute multi taps");
+            throw new InvalidOperationException("Editor Input can not execute multiple taps");
         }
     }
 }

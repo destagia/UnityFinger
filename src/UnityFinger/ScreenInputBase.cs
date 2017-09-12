@@ -1,5 +1,4 @@
 ﻿using UnityEngine;
-using System.Collections.Generic;
 using UnityEngine.EventSystems;
 
 namespace UnityFinger
@@ -12,31 +11,28 @@ namespace UnityFinger
 
 namespace UnityFinger
 {
-    /// <summary>
-    /// There is the difference that ScreenInputBase has the function `Update` but
-    /// IScreenInput not. Because ScreenInputBase is iterated at FingerManager
-    /// but IScreenInput is used as the container of the input infomations.
-    /// The Function Update must be visible only for supervisor such as FingerManager.
-    /// </summary>
     public abstract class ScreenInputBase : IScreenInput
     {
-         EventSystem eventSystem;
-        protected EventSystem EventSystem {
+        EventSystem eventSystem;
+        public EventSystem EventSystem {
             get {
                 if (eventSystem == null || eventSystem.gameObject == null) {
                     eventSystem = UnityEngine.Object.FindObjectOfType<EventSystem>();
                     if (eventSystem == null) {
-                        var eventSystemObj = new GameObject();
-                        eventSystemObj.name = "EventSystem";
+                        var eventSystemObj = new GameObject {
+                            name = "EventSystem"
+                        };
                         eventSystem = eventSystemObj.AddComponent<EventSystem>();
                         eventSystemObj.AddComponent<StandaloneInputModule>();
-                        eventSystemObj.AddComponent<TouchInputModule>();
                     }
                 }
                 return eventSystem;
             }
         }
 
+        /// <summary>
+        /// Must update to change their states.
+        /// </summary>
         public abstract void Update();
 
         #region ITimer implementation

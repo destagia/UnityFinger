@@ -1,26 +1,23 @@
 ﻿using UnityEngine;
 using System.Collections.Generic;
-using UnityFinger.Observers;
 
 namespace UnityFinger
 {
     public class FingerObserverSupervisor : ITimer
     {
-         ScreenInputBase input;
-         List<IObserver> observers;
+        readonly IScreenInput input;
 
-         float onScreenStartTime;
-         bool isFirstOnScreen;
+        readonly List<IObserver> observers;
 
         /// <summary>
         /// Observing coroutines
         /// </summary>
-         List<IEnumerator<Result>> observerCoroutines;
+        readonly List<IEnumerator<Result>> observerCoroutines;
 
         /// <summary>
         /// If the enumerator return Result.InAction, it is being focus on
         /// </summary>
-         IEnumerator<Result> selectedCoroutine;
+        IEnumerator<Result> selectedCoroutine;
 
         public void AddObserver(IObserver observer)
         {
@@ -33,7 +30,7 @@ namespace UnityFinger
             observers.Remove(observer);
         }
 
-        public FingerObserverSupervisor(ScreenInputBase input)
+        public FingerObserverSupervisor(IScreenInput input)
         {
             this.input = input;
             observers = new List<IObserver>();
@@ -42,18 +39,19 @@ namespace UnityFinger
 
         public void Update()
         {
-            input.Update();
-
             if (input.FingerCount > 0) {
                 if (isFirstOnScreen) {
                     onScreenStartTime = Time.time;
+
                     foreach (var observer in observerCoroutines) {
                         observer.Dispose();
                     }
                     observerCoroutines.Clear();
+
                     foreach (var observer in observers) {
                         observerCoroutines.Add(observer.GetObserver(input, this));
                     }
+
                     isFirstOnScreen = false;
                 }
                 OnEvent();
@@ -62,8 +60,10 @@ namespace UnityFinger
                     foreach (var observerCoroutine in observerCoroutines) {
                         observerCoroutine.Dispose();
                     }
+
                     selectedCoroutine = null;
                 }
+
                 isFirstOnScreen = true;
             }
         }
@@ -75,7 +75,7 @@ namespace UnityFinger
             }
         }
 
-         bool OnEvent()
+        bool OnEvent()
         {
             if (selectedCoroutine != null) {
                 return selectedCoroutine.MoveNext();
@@ -92,17 +92,23 @@ namespace UnityFinger
 
         #region ITimer implementation
 
+        bool isFirstOnScreen;
+
+        float onScreenStartTime;
+
         public float ElapsedTime { get { return Time.time - onScreenStartTime; } }
 
         #endregion
 
-         class ObserverComparer : IComparer<IObserver>
+        class ObserverComparer : IComparer<IObserver>
         {
             #region IComparer implementation
+
             public int Compare(IObserver x, IObserver y)
             {
                 return x.Priority - y.Priority;
             }
+
             #endregion
         }
     }

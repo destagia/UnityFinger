@@ -29,9 +29,9 @@ namespace UnityFinger.Observers
 {
     public class DragObserver : IObserver
     {
-         readonly IDragListener listener;
+        readonly IDragListener listener;
 
-         readonly IFingerObserverConfig config;
+        readonly IFingerObserverConfig config;
 
         /// <summary>
         /// if IgnoreOtherObservers is true, drag events will be fired
