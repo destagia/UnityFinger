@@ -62,18 +62,20 @@ namespace UnityFinger.Observers
             var isInvoked = false;
 
             while (fingerInput.FingerCount == 1) {
-
-                if (fingerInput.FingerCount > 1) { yield break; }
+                if (fingerInput.FingerCount > 1) {
+                    yield break;
+                }
 
                 if (ignoreOtherObservers || timer.ElapsedTime > config.DragDuration) {
                     prevPosition = currentPosition;
                     currentPosition = fingerInput.GetPosition();
-                    if ((currentPosition - origin).magnitude > config.DragDistance) {
+
+                    var moveDelta = currentPosition - origin;
+                    if (moveDelta.magnitude > config.DragDistance) {
                         if (!isInvoked) {
-                            listener.OnDragStart(new DragInfo(prevPosition, currentPosition, currentPosition - origin));
+                            listener.OnDragStart(new DragInfo(prevPosition, currentPosition, moveDelta));
                         }
                         isInvoked = true;
-                        yield return Result.InAction;
                         break;
                     }
                 }
@@ -81,19 +83,21 @@ namespace UnityFinger.Observers
                 yield return Result.None;
             }
 
+            yield return Result.InAction;
+
             if (fingerInput.FingerCount > 0) {
                 prevPosition = currentPosition;
                 currentPosition = fingerInput.GetPosition();
             }
 
-            while (isInvoked && fingerInput.FingerCount > 0) {
-                listener.OnDrag(new DragInfo(prevPosition, currentPosition, currentPosition - origin));
-                prevPosition = currentPosition;
-                currentPosition = fingerInput.GetPosition();
-                yield return Result.InAction;
-            }
-
             if (isInvoked) {
+                while (fingerInput.FingerCount > 0) {
+                    listener.OnDrag(new DragInfo(prevPosition, currentPosition, currentPosition - origin));
+                    prevPosition = currentPosition;
+                    currentPosition = fingerInput.GetPosition();
+                    yield return Result.InAction;
+                }
+
                 listener.OnDragEnd(new DragInfo(prevPosition, currentPosition, currentPosition - origin));
                 yield return Result.InAction;
             }
