@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{624E82E9-C934-4BB2-9DCE-D3C5C6239B65}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <RootNamespace>UnityFinger</RootNamespace>
+    <AssemblyName>UnityFinger</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug</OutputPath>
+    <DefineConstants>DEBUG;</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <ConsolePause>false</ConsolePause>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release</OutputPath>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <ConsolePause>false</ConsolePause>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="UnityEngine">
+      <HintPath>..\packages\UnityEngine.5.4.3\UnityEngine.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.UI">
+      <HintPath>..\packages\UnityEngine.5.4.3\UnityEngine.UI.dll</HintPath>
+    </Reference>
+    <Reference Include="nunit.core, Version=2.4.8.0, Culture=neutral, PublicKeyToken=96d09a1eb7f44a77" />
+    <Reference Include="nunit.framework, Version=2.4.8.0, Culture=neutral, PublicKeyToken=96d09a1eb7f44a77" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="src\UnityFinger\DefaultFingerObserverConfig.cs" />
+    <Compile Include="src\UnityFinger\EditorInput.cs" />
+    <Compile Include="src\UnityFinger\FingerEventManager.cs" />
+    <Compile Include="src\UnityFinger\FingerObserverSupervisor.cs" />
+    <Compile Include="src\UnityFinger\IFingerObserverConfig.cs" />
+    <Compile Include="src\UnityFinger\IObserver.cs" />
+    <Compile Include="src\UnityFinger\IScreenInput.cs" />
+    <Compile Include="src\UnityFinger\MobileInput.cs" />
+    <Compile Include="src\UnityFinger\ScreenInputBase.cs" />
+    <Compile Include="src\UnityFinger.Observers\DragObserver.cs" />
+    <Compile Include="src\UnityFinger.Observers\FlickObserver.cs" />
+    <Compile Include="src\UnityFinger.Observers\LongTapObserver.cs" />
+    <Compile Include="src\UnityFinger.Observers\PinchObserver.cs" />
+    <Compile Include="src\UnityFinger.Observers\ScreenObserver.cs" />
+    <Compile Include="src\UnityFinger.Observers\TapObserver.cs" />
+    <Compile Include="src\UnityFinger.Observers\TwoFingersTapObserver.cs" />
+    <Compile Include="test\DragObserverTest.cs" />
+    <Compile Include="test\ObserverTestSet.cs" />
+    <Compile Include="test\ScreenObserverTest.cs" />
+    <Compile Include="test\TapObserverTest.cs" />
+    <Compile Include="test\TestConfig.cs" />
+    <Compile Include="test\TestInput.cs" />
+    <Compile Include="test\TestTimer.cs" />
+  </ItemGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+</Project>
