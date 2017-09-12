@@ -1,10 +1,9 @@
-﻿using NUnit.Framework;
+using NUnit.Framework;
 using UnityFinger.Observers;
 using UnityEngine;
 
 namespace UnityFinger.Tests
 {
-    [TestFixture(TestName = "ScreenObserver")]
     class ScreenObserverTest : IScreenListener
     {
         ObserverTestSet<ScreenObserver> testSet;
@@ -32,7 +31,7 @@ namespace UnityFinger.Tests
 
             Assert.AreEqual(new Vector2(5, 5), testSet.Input.GetPosition());
 
-            Assert.False(testSet.Enumerator.MoveNext());
+            Assert.IsFalse(testSet.Enumerator.MoveNext());
             Assert.AreEqual(Result.None, testSet.Enumerator.Current);
             Assert.AreEqual(new Vector2(5, 5), position);
         }
