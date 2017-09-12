@@ -6,7 +6,7 @@ namespace UnityFinger
     /// <summary>
     /// Unity Editor input
     /// </summary>
-	public class EditorInput : ScreenInputBase
+    public class EditorInput : ScreenInputBase
     {
         private enum State
         {
