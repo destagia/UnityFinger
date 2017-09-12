@@ -1,7 +1,5 @@
 ﻿using NUnit.Framework;
-using System.Collections.Generic;
 using UnityFinger.Observers;
-using System;
 using UnityEngine;
 
 namespace UnityFinger.Tests
@@ -9,25 +7,17 @@ namespace UnityFinger.Tests
     [TestFixture(TestName = "TapObserver")]
     class TapObserverTest : ITapListener
     {
-        TestInput input;
-        TestTimer timer;
-
-        TapObserver observer;
-        IEnumerator<Result> enumerator;
+        ObserverTestSet<TapObserver> testSet;
 
         Vector2? tapPosition = null;
 
         [SetUp]
         public void SetUp()
         {
-            input = new TestInput();
-            timer = new TestTimer();
-
             tapPosition = null;
 
-            observer = new TapObserver(new TestConfig(), this);
-
-            enumerator = observer.GetObserver(input, timer);
+            testSet = new ObserverTestSet<TapObserver>();
+            testSet.SetUp(() => new TapObserver(new TestConfig(), this));
         }
 
         void ITapListener.OnTap(Vector2 position)
@@ -39,17 +29,17 @@ namespace UnityFinger.Tests
         public void Works()
         {
             // A finger is on the screen
-            input.FingerCount = 1;
-            input.SetPosition(new Vector2(5, 5));
+            testSet.Input.FingerCount = 1;
+            testSet.Input.SetPosition(new Vector2(5, 5));
 
-            Assert.True(enumerator.MoveNext());
-            Assert.AreEqual(Result.None, enumerator.Current);
+            Assert.True(testSet.Enumerator.MoveNext());
+            Assert.AreEqual(Result.None, testSet.Enumerator.Current);
 
             // A finger was released from the screen
-            input.FingerCount = 0;
+            testSet.Input.FingerCount = 0;
 
-            Assert.True(enumerator.MoveNext());
-            Assert.AreEqual(Result.InAction, enumerator.Current);
+            Assert.True(testSet.Enumerator.MoveNext());
+            Assert.AreEqual(Result.InAction, testSet.Enumerator.Current);
 
             Assert.True(tapPosition.HasValue);
             Assert.AreEqual(new Vector2(5, 5), tapPosition.Value);
@@ -59,23 +49,23 @@ namespace UnityFinger.Tests
         public void WorksIfFingerMoveLittle()
         {
             // A finger is on the screen
-            input.FingerCount = 1;
-            input.SetPosition(new Vector2(5, 5));
+            testSet.Input.FingerCount = 1;
+            testSet.Input.SetPosition(new Vector2(5, 5));
 
-            Assert.True(enumerator.MoveNext());
-            Assert.AreEqual(Result.None, enumerator.Current);
+            Assert.True(testSet.Enumerator.MoveNext());
+            Assert.AreEqual(Result.None, testSet.Enumerator.Current);
 
             // In the next frame, the finger has moved a little
-            input.SetPosition(new Vector2(5.1f, 5.1f));
+            testSet.Input.SetPosition(new Vector2(5.1f, 5.1f));
 
-            Assert.True(enumerator.MoveNext());
-            Assert.AreEqual(Result.None, enumerator.Current);
+            Assert.True(testSet.Enumerator.MoveNext());
+            Assert.AreEqual(Result.None, testSet.Enumerator.Current);
 
             // The finger was released from the screen
-            input.FingerCount = 0;
+            testSet.Input.FingerCount = 0;
 
-            Assert.True(enumerator.MoveNext());
-            Assert.AreEqual(Result.InAction, enumerator.Current);
+            Assert.True(testSet.Enumerator.MoveNext());
+            Assert.AreEqual(Result.InAction, testSet.Enumerator.Current);
 
             Assert.True(tapPosition.HasValue);
             Assert.AreEqual(new Vector2(5.1f, 5.1f), tapPosition.Value);
@@ -85,11 +75,11 @@ namespace UnityFinger.Tests
         public void FailsIfFingerCountIsOver()
         {
             // Two finger is on the screen
-            input.FingerCount = 2;
-            input.SetPosition(new Vector2(5, 5));
+            testSet.Input.FingerCount = 2;
+            testSet.Input.SetPosition(new Vector2(5, 5));
 
-            Assert.False(enumerator.MoveNext());
-            Assert.AreEqual(Result.None, enumerator.Current);
+            Assert.False(testSet.Enumerator.MoveNext());
+            Assert.AreEqual(Result.None, testSet.Enumerator.Current);
             Assert.False(tapPosition.HasValue);
         }
 
@@ -97,16 +87,16 @@ namespace UnityFinger.Tests
         public void FailsIfFingerMoveMuch()
         {
             // A finger is on the screen
-            input.FingerCount = 1;
-            input.SetPosition(new Vector2(5, 5));
+            testSet.Input.FingerCount = 1;
+            testSet.Input.SetPosition(new Vector2(5, 5));
 
-            Assert.True(enumerator.MoveNext());
-            Assert.AreEqual(Result.None, enumerator.Current);
+            Assert.True(testSet.Enumerator.MoveNext());
+            Assert.AreEqual(Result.None, testSet.Enumerator.Current);
 
             // In the next frame, the finger has moved too much
-            input.SetPosition(new Vector2(100, 100));
+            testSet.Input.SetPosition(new Vector2(100, 100));
 
-            Assert.False(enumerator.MoveNext());
+            Assert.False(testSet.Enumerator.MoveNext());
             Assert.False(tapPosition.HasValue);
         }
 
@@ -114,17 +104,17 @@ namespace UnityFinger.Tests
         public void FailsIfTimeIsOver()
         {
             // A finger is on the screen
-            input.FingerCount = 1;
-            input.SetPosition(new Vector2(5, 5));
+            testSet.Input.FingerCount = 1;
+            testSet.Input.SetPosition(new Vector2(5, 5));
 
-            Assert.True(enumerator.MoveNext());
-            Assert.AreEqual(Result.None, enumerator.Current);
+            Assert.True(testSet.Enumerator.MoveNext());
+            Assert.AreEqual(Result.None, testSet.Enumerator.Current);
 
             // It takes too many times
-            input.FingerCount = 0;
-            timer.ElapsedTime = 2f;
+            testSet.Input.FingerCount = 0;
+            testSet.Timer.ElapsedTime = 2f;
 
-            Assert.False(enumerator.MoveNext());
+            Assert.False(testSet.Enumerator.MoveNext());
             Assert.False(tapPosition.HasValue);
         }
     }
