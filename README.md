@@ -2,13 +2,27 @@
 
 Screen events manager for Unity
 
+## Requirements
 
-## Usage
+- UnityEngine
+- UnityEngine.UI
+- NUnitFramework
+
+
+## Tests
+
+I use `NUnitFramework` as test tool.
+see `UnityFinger/Tests` directory.
+
+
+## Sample
 
 The sample Unity project is here for your reference!
 
 - https://github.com/tagia0212/UnityFinger.Sample
 
+
+## Usage
 
 You should know the follwoing knowledges for using UnityFinger
 
@@ -62,14 +76,3 @@ void Update()
     supervisor.Update();
 }
 ```
-
-
-### Requirements
-
-- UnityEngine
-- UnityEngine.UI
-
-## Tests
-
-I use `NUnitFramework` as test tool.
-see `UnityFinger/Tests` directory.
