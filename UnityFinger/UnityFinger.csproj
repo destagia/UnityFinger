@@ -43,29 +43,29 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="src\UnityFinger\DefaultFingerObserverConfig.cs" />
-    <Compile Include="src\UnityFinger\EditorInput.cs" />
-    <Compile Include="src\UnityFinger\FingerEventManager.cs" />
-    <Compile Include="src\UnityFinger\FingerObserverSupervisor.cs" />
-    <Compile Include="src\UnityFinger\IFingerObserverConfig.cs" />
-    <Compile Include="src\UnityFinger\IObserver.cs" />
-    <Compile Include="src\UnityFinger\IScreenInput.cs" />
-    <Compile Include="src\UnityFinger\MobileInput.cs" />
-    <Compile Include="src\UnityFinger\ScreenInputBase.cs" />
-    <Compile Include="src\UnityFinger.Observers\DragObserver.cs" />
-    <Compile Include="src\UnityFinger.Observers\FlickObserver.cs" />
-    <Compile Include="src\UnityFinger.Observers\LongTapObserver.cs" />
-    <Compile Include="src\UnityFinger.Observers\PinchObserver.cs" />
-    <Compile Include="src\UnityFinger.Observers\ScreenObserver.cs" />
-    <Compile Include="src\UnityFinger.Observers\TapObserver.cs" />
-    <Compile Include="src\UnityFinger.Observers\TwoFingersTapObserver.cs" />
-    <Compile Include="test\DragObserverTest.cs" />
-    <Compile Include="test\ObserverTestSet.cs" />
-    <Compile Include="test\ScreenObserverTest.cs" />
-    <Compile Include="test\TapObserverTest.cs" />
-    <Compile Include="test\TestConfig.cs" />
-    <Compile Include="test\TestInput.cs" />
-    <Compile Include="test\TestTimer.cs" />
+    <Compile Include="Scripts\UnityFinger\DefaultFingerObserverConfig.cs" />
+    <Compile Include="Scripts\UnityFinger\EditorInput.cs" />
+    <Compile Include="Scripts\UnityFinger\FingerEventManager.cs" />
+    <Compile Include="Scripts\UnityFinger\FingerObserverSupervisor.cs" />
+    <Compile Include="Scripts\UnityFinger\IFingerObserverConfig.cs" />
+    <Compile Include="Scripts\UnityFinger\IObserver.cs" />
+    <Compile Include="Scripts\UnityFinger\IScreenInput.cs" />
+    <Compile Include="Scripts\UnityFinger\MobileInput.cs" />
+    <Compile Include="Scripts\UnityFinger\ScreenInputBase.cs" />
+    <Compile Include="Scripts\UnityFinger.Observers\DragObserver.cs" />
+    <Compile Include="Scripts\UnityFinger.Observers\FlickObserver.cs" />
+    <Compile Include="Scripts\UnityFinger.Observers\LongTapObserver.cs" />
+    <Compile Include="Scripts\UnityFinger.Observers\PinchObserver.cs" />
+    <Compile Include="Scripts\UnityFinger.Observers\ScreenObserver.cs" />
+    <Compile Include="Scripts\UnityFinger.Observers\TapObserver.cs" />
+    <Compile Include="Scripts\UnityFinger.Observers\TwoFingersTapObserver.cs" />
+    <Compile Include="Tests\DragObserverTest.cs" />
+    <Compile Include="Tests\ObserverTestSet.cs" />
+    <Compile Include="Tests\ScreenObserverTest.cs" />
+    <Compile Include="Tests\TapObserverTest.cs" />
+    <Compile Include="Tests\TestConfig.cs" />
+    <Compile Include="Tests\TestInput.cs" />
+    <Compile Include="Tests\TestTimer.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
