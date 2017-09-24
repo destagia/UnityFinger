@@ -1,4 +1,4 @@
-﻿using UnityEngine;
+﻿using System.Linq;
 using System.Collections.Generic;
 
 namespace UnityFinger
@@ -92,15 +92,8 @@ namespace UnityFinger
                 return selectedCoroutine.MoveNext();
             }
 
-            var isAnyContinuing = false;
-            foreach (var observer in observerCoroutines) {
-                if ((isAnyContinuing |= observer.MoveNext()) && observer.Current == Result.InAction) {
-                    selectedCoroutine = observer;
-                    return true;
-                }
-            }
-
-            return isAnyContinuing;
+            selectedCoroutine = observerCoroutines.Find(o => o.MoveNext() && o.Current == Result.InAction);
+            return selectedCoroutine != null;
         }
 
         class ObserverComparer : IComparer<IObserver>
