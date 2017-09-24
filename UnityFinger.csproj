@@ -8,9 +8,10 @@
     <OutputType>Library</OutputType>
     <RootNamespace>UnityFinger</RootNamespace>
     <AssemblyName>UnityFinger</AssemblyName>
-    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <NuGetPackageImportStamp>
     </NuGetPackageImportStamp>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -30,9 +31,6 @@
     <ConsolePause>false</ConsolePause>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="nunit.framework, Version=3.8.1.0, Culture=neutral, PublicKeyToken=2638cd05610744eb, processorArchitecture=MSIL">
-      <HintPath>..\packages\NUnit.3.8.1\lib\net45\nunit.framework.dll</HintPath>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="UnityEngine">
       <HintPath>..\packages\UnityEngine.5.4.3\UnityEngine.dll</HintPath>
@@ -71,15 +69,6 @@
     <Compile Include="Scripts\UnityFinger.Observers\TapObserver.cs" />
     <Compile Include="Scripts\UnityFinger.Observers\TwoFingersTapObserver.cs" />
     <Compile Include="Scripts\UnityFinger\Timer.cs" />
-    <Compile Include="Tests\DragObserverTest.cs" />
-    <Compile Include="Tests\LongTapObserverTest.cs" />
-    <Compile Include="Tests\ObserverTestSet.cs" />
-    <Compile Include="Tests\ScreenObserverTest.cs" />
-    <Compile Include="Tests\TapObserverTest.cs" />
-    <Compile Include="Tests\TestConfig.cs" />
-    <Compile Include="Tests\TestInput.cs" />
-    <Compile Include="Tests\TestTimer.cs" />
-    <Compile Include="Tests\FingerEventManagerTest.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
