@@ -1,7 +1,5 @@
 ﻿using NUnit.Framework;
-using UnityFinger.Observers;
 using UnityEngine;
-using System;
 
 namespace UnityFinger.Test
 {
