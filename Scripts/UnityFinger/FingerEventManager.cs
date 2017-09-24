@@ -1,10 +1,18 @@
 ﻿using UnityEngine;
 using UnityEngine.Events;
 using UnityFinger.Observers;
+using UnityFinger.Events;
 
 namespace UnityFinger
 {
-    public class FingerEventManager : IScreenListener, ITapListener, IDragListener, IFlickListener, ITwoFingersListener, ILongTapListener, IPinchListener
+    public class FingerEventManager :
+        IScreenListener,
+        ITapListener,
+        IDragListener,
+        IFlickListener,
+        ITwoFingersListener,
+        ILongTapListener,
+        IPinchListener
     {
         void IScreenListener.OnScreen(Vector2 position)
         {
@@ -59,85 +67,6 @@ namespace UnityFinger
         void IPinchListener.OnPinchEnd()
         {
             onPinchEnd.Invoke();
-        }
-
-        interface ICountableEvent
-        {
-            int ListenersCount { get; }
-        }
-
-        class VoidEvent : UnityEvent, ICountableEvent
-        {
-            public int ListenersCount { set; get; }
-
-            new public void AddListener(UnityAction callback)
-            {
-                ListenersCount++;
-                base.AddListener(callback);
-            }
-
-            new public void RemoveListener(UnityAction callback)
-            {
-                ListenersCount--;
-                base.AddListener(callback);
-            }
-        }
-
-        abstract class CountableEvent<T> : UnityEvent<T>, ICountableEvent
-        {
-            public int ListenersCount { set; get; }
-
-            new public void AddListener(UnityAction<T> callback)
-            {
-                ListenersCount++;
-                base.AddListener(callback);
-            }
-
-            new public void RemoveListener(UnityAction<T> callback)
-            {
-                ListenersCount--;
-                base.AddListener(callback);
-            }
-        }
-
-        class FlickEvent : CountableEvent<FlickInfo>
-        {
-        }
-
-        class DragEvent : CountableEvent<DragInfo>
-        {
-        }
-
-        class TwoFingersEvent : CountableEvent<TwoFingersTapInfo>
-        {
-        }
-
-        class PositionEvent : CountableEvent<Vector2>
-        {
-        }
-
-        class PinchEvent : CountableEvent<PinchInfo>
-        {
-        }
-
-        class CompositeEvent : ICountableEvent
-        {
-            readonly ICountableEvent[] events;
-
-            public CompositeEvent(params ICountableEvent[] events)
-            {
-                this.events = events;
-            }
-
-            public int ListenersCount {
-                get {
-                    var sum = 0;
-                    foreach (var e in events) {
-                        sum += e.ListenersCount;
-                    }
-                    return sum;
-                }
-            }
         }
 
         readonly FingerObserverSupervisor supervisor;

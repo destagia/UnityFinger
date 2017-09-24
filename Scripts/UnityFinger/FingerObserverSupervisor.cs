@@ -3,9 +3,13 @@ using System.Collections.Generic;
 
 namespace UnityFinger
 {
-    public class FingerObserverSupervisor : ITimer
+    public class FingerObserverSupervisor
     {
         readonly IScreenInput input;
+
+        bool isFirstOnScreen;
+
+        readonly ITimer timer;
 
         readonly List<IObserver> observers;
 
@@ -30,9 +34,14 @@ namespace UnityFinger
             observers.Remove(observer);
         }
 
-        public FingerObserverSupervisor(IScreenInput input)
+        public FingerObserverSupervisor(IScreenInput input) : this(input, new Timer())
+        {
+        }
+
+        public FingerObserverSupervisor(IScreenInput input, ITimer timer)
         {
             this.input = input;
+            this.timer = timer;
             observers = new List<IObserver>();
             observerCoroutines = new List<IEnumerator<Result>>();
         }
@@ -53,7 +62,7 @@ namespace UnityFinger
             }
 
             if (isFirstOnScreen) {
-                onScreenStartTime = Time.time;
+                timer.Start();
 
                 foreach (var observer in observerCoroutines) {
                     observer.Dispose();
@@ -61,7 +70,7 @@ namespace UnityFinger
                 observerCoroutines.Clear();
 
                 foreach (var observer in observers) {
-                    observerCoroutines.Add(observer.GetObserver(input, this));
+                    observerCoroutines.Add(observer.GetObserver(input, timer));
                 }
 
                 isFirstOnScreen = false;
@@ -93,16 +102,6 @@ namespace UnityFinger
 
             return isAnyContinuing;
         }
-
-        #region ITimer implementation
-
-        bool isFirstOnScreen;
-
-        float onScreenStartTime;
-
-        public float ElapsedTime { get { return Time.time - onScreenStartTime; } }
-
-        #endregion
 
         class ObserverComparer : IComparer<IObserver>
         {

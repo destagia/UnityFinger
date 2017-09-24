@@ -43,6 +43,15 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Scripts\UnityFinger.Events\CompositeEvent.cs" />
+    <Compile Include="Scripts\UnityFinger.Events\CountableEvent.cs" />
+    <Compile Include="Scripts\UnityFinger.Events\DragEvent.cs" />
+    <Compile Include="Scripts\UnityFinger.Events\FlickEvent.cs" />
+    <Compile Include="Scripts\UnityFinger.Events\ICountableEvent.cs" />
+    <Compile Include="Scripts\UnityFinger.Events\PinchEvent.cs" />
+    <Compile Include="Scripts\UnityFinger.Events\PositionEvent.cs" />
+    <Compile Include="Scripts\UnityFinger.Events\TwoFingersEvent.cs" />
+    <Compile Include="Scripts\UnityFinger.Events\VoidEvent.cs" />
     <Compile Include="Scripts\UnityFinger\DefaultFingerObserverConfig.cs" />
     <Compile Include="Scripts\UnityFinger\EditorInput.cs" />
     <Compile Include="Scripts\UnityFinger\FingerEventManager.cs" />
@@ -50,7 +59,9 @@
     <Compile Include="Scripts\UnityFinger\IFingerObserverConfig.cs" />
     <Compile Include="Scripts\UnityFinger\IObserver.cs" />
     <Compile Include="Scripts\UnityFinger\IScreenInput.cs" />
+    <Compile Include="Scripts\UnityFinger\ITimer.cs" />
     <Compile Include="Scripts\UnityFinger\MobileInput.cs" />
+    <Compile Include="Scripts\UnityFinger\Result.cs" />
     <Compile Include="Scripts\UnityFinger\ScreenInputBase.cs" />
     <Compile Include="Scripts\UnityFinger.Observers\DragObserver.cs" />
     <Compile Include="Scripts\UnityFinger.Observers\FlickObserver.cs" />
@@ -59,6 +70,7 @@
     <Compile Include="Scripts\UnityFinger.Observers\ScreenObserver.cs" />
     <Compile Include="Scripts\UnityFinger.Observers\TapObserver.cs" />
     <Compile Include="Scripts\UnityFinger.Observers\TwoFingersTapObserver.cs" />
+    <Compile Include="Scripts\UnityFinger\Timer.cs" />
     <Compile Include="Tests\DragObserverTest.cs" />
     <Compile Include="Tests\LongTapObserverTest.cs" />
     <Compile Include="Tests\ObserverTestSet.cs" />
@@ -67,6 +79,7 @@
     <Compile Include="Tests\TestConfig.cs" />
     <Compile Include="Tests\TestInput.cs" />
     <Compile Include="Tests\TestTimer.cs" />
+    <Compile Include="Tests\FingerEventManagerTest.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
