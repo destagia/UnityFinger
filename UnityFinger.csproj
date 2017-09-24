@@ -60,6 +60,7 @@
     <Compile Include="Scripts\UnityFinger.Observers\TapObserver.cs" />
     <Compile Include="Scripts\UnityFinger.Observers\TwoFingersTapObserver.cs" />
     <Compile Include="Tests\DragObserverTest.cs" />
+    <Compile Include="Tests\LongTapObserverTest.cs" />
     <Compile Include="Tests\ObserverTestSet.cs" />
     <Compile Include="Tests\ScreenObserverTest.cs" />
     <Compile Include="Tests\TapObserverTest.cs" />
