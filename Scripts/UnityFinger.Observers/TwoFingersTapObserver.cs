@@ -4,18 +4,6 @@ using System.Collections.Generic;
 
 namespace UnityFinger
 {
-    public struct TwoFingersTapInfo
-    {
-        public readonly Vector2 firstPosition;
-        public readonly Vector2 secondPosition;
-
-        public TwoFingersTapInfo(Vector2 firstPosition, Vector2 secondPosition)
-        {
-            this.firstPosition = firstPosition;
-            this.secondPosition = secondPosition;
-        }
-    }
-
     public interface ITwoFingersListener
     {
         void OnTwoFingersTap(TwoFingersTapInfo info);

@@ -3,40 +3,6 @@ using UnityEngine;
 
 namespace UnityFinger
 {
-    public struct PinchInfo
-    {
-        public readonly Vector2 startPosition1;
-        public readonly Vector2 startPosition2;
-
-        public readonly Vector2 prevPosition1;
-        public readonly Vector2 prevPosition2;
-
-        public readonly Vector2 position1;
-        public readonly Vector2 position2;
-
-        public PinchInfo(Vector2 startPosition1, Vector2 startPosition2, Vector2 position1, Vector2 position2, Vector2 prevPosition1, Vector2 prevPosition2)
-        {
-            this.position1 = position1;
-            this.position2 = position2;
-            this.startPosition1 = startPosition1;
-            this.startPosition2 = startPosition2;
-            this.prevPosition1 = prevPosition1;
-            this.prevPosition2 = prevPosition2;
-        }
-
-        public float StartDistance {
-            get { return (startPosition1 - startPosition2).magnitude; }
-        }
-
-        public float PrevDistance {
-            get { return (prevPosition1 - prevPosition2).magnitude; }
-        }
-
-        public float Distance {
-            get { return (position1 - position2).magnitude; }
-        }
-    }
-
     public interface IPinchListener
     {
         void OnPinchStart(PinchInfo info);
@@ -65,12 +31,12 @@ namespace UnityFinger.Observers
 
         public IEnumerator<Result> GetObserver(IScreenInput fingerInput, ITimer timer)
         {
-            Vector2 startFirst = Vector2.zero;
-            Vector2 startSecond = Vector2.zero;
+            Vector2 firstCurrent = Vector2.zero;
+            Vector2 secondCurrent = Vector2.zero;
 
             bool isFirstFrame = true;
-            Vector2 firstStartFirst = Vector2.zero;
-            Vector2 firstStartSecond = Vector2.zero;
+            Vector2 firstOrigin = Vector2.zero;
+            Vector2 secondOrigin = Vector2.zero;
 
             // Wait until two fingers are on screen in time
             while (fingerInput.FingerCount > 0) {
@@ -83,51 +49,49 @@ namespace UnityFinger.Observers
                     yield return Result.None;
                 }
 
-                startFirst = fingerInput.GetPosition();
-                startSecond = fingerInput.GetSecondPosition();
+                firstCurrent = fingerInput.GetPosition();
+                secondCurrent = fingerInput.GetSecondPosition();
 
                 if (isFirstFrame) {
                     isFirstFrame = false;
-                    firstStartFirst = startFirst;
-                    firstStartSecond = startSecond;
+                    firstOrigin = firstCurrent;
+                    secondOrigin = secondCurrent;
                 }
 
-                var firstFingerMove = (startFirst - firstStartFirst).magnitude;
+                var firstFingerMove = (firstCurrent - firstOrigin).magnitude;
                 if (firstFingerMove < config.PinchStartDistance) {
                     yield return Result.None;
                 }
 
-                var secondFingerMove = (startSecond - firstStartSecond).magnitude;
+                var secondFingerMove = (secondCurrent - secondOrigin).magnitude;
                 if (secondFingerMove < config.PinchStartDistance) {
                     yield return Result.None;
                 }
 
-                listener.OnPinchStart(new PinchInfo(
-                    firstStartFirst,
-                    firstStartSecond,
-                    startFirst,
-                    startSecond,
-                    firstStartFirst,
-                    firstStartSecond));
+                var first = new DragInfo(firstOrigin, firstOrigin, firstCurrent);
+                var second = new DragInfo(secondOrigin, secondOrigin, secondCurrent);
 
+                listener.OnPinchStart(new PinchInfo(first, second));
                 break;
             }
 
             yield return Result.InAction;
 
-            Vector2 prevFirst = startFirst;
-            Vector2 prevSecond = startSecond;
+            Vector2 firstPrevious = firstCurrent;
+            Vector2 secondPrevious = secondCurrent;
 
             var invokePinch = false;
 
             while (fingerInput.FingerCount >= 2) {
-                var first = fingerInput.GetPosition();
-                var second = fingerInput.GetSecondPosition();
+                firstCurrent = fingerInput.GetPosition();
+                secondCurrent = fingerInput.GetSecondPosition();
 
-                listener.OnPinch(new PinchInfo(startFirst, startSecond, first, second, prevFirst, prevSecond));
+                var first = new DragInfo(firstOrigin, firstPrevious, firstCurrent);
+                var second = new DragInfo(secondOrigin, secondPrevious, secondCurrent);
+                listener.OnPinch(new PinchInfo(first, second));
 
-                prevFirst = first;
-                prevSecond = second;
+                firstPrevious = firstCurrent;
+                secondPrevious = secondCurrent;
 
                 invokePinch = true;
                 yield return Result.InAction;

@@ -3,18 +3,6 @@ using System.Collections.Generic;
 
 namespace UnityFinger
 {
-    public struct FlickInfo
-    {
-        public readonly Vector2 origin;
-        public readonly Vector2 direction;
-
-        public FlickInfo(Vector2 origin, Vector2 direction)
-        {
-            this.origin = origin;
-            this.direction = direction;
-        }
-    }
-
     public interface IFlickListener
     {
         void OnFlick(FlickInfo info);

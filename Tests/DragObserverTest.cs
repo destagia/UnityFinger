@@ -54,27 +54,27 @@ namespace UnityFinger.Test
             Assert.IsTrue(testSet.Enumerator.MoveNext());
             Assert.AreEqual(Result.InAction, testSet.Enumerator.Current);
             Assert.IsTrue(dragStartInfo.HasValue);
-            Assert.AreEqual(new Vector2(10f, 10f), dragStartInfo.Value.prevPosition);
-            Assert.AreEqual(new Vector2(11f, 11f), dragStartInfo.Value.position);
-            Assert.AreEqual(new Vector2(1f, 1f), dragStartInfo.Value.delta);
+            Assert.AreEqual(new Vector2(10f, 10f), dragStartInfo.Value.Origin);
+            Assert.AreEqual(new Vector2(10f, 10f), dragStartInfo.Value.Previous);
+            Assert.AreEqual(new Vector2(11f, 11f), dragStartInfo.Value.Current);
 
             testSet.Input.SetPosition(new Vector2(13f, 13f));
 
             Assert.IsTrue(testSet.Enumerator.MoveNext());
             Assert.AreEqual(Result.InAction, testSet.Enumerator.Current);
             Assert.IsTrue(dragInfo.HasValue);
-            Assert.AreEqual(new Vector2(11f, 11f), dragInfo.Value.prevPosition);
-            Assert.AreEqual(new Vector2(13f, 13f), dragInfo.Value.position);
-            Assert.AreEqual(new Vector2(3f, 3f), dragInfo.Value.delta);
+            Assert.AreEqual(new Vector2(10f, 10f), dragStartInfo.Value.Origin);
+            Assert.AreEqual(new Vector2(11f, 11f), dragInfo.Value.Previous);
+            Assert.AreEqual(new Vector2(13f, 13f), dragInfo.Value.Current);
 
             testSet.Input.FingerCount = 0;
 
             Assert.IsTrue(testSet.Enumerator.MoveNext());
             Assert.AreEqual(Result.InAction, testSet.Enumerator.Current);
             Assert.IsTrue(dragEndInfo.HasValue);
-            Assert.AreEqual(new Vector2(13f, 13f), dragEndInfo.Value.prevPosition);
-            Assert.AreEqual(new Vector2(13f, 13f), dragEndInfo.Value.position);
-            Assert.AreEqual(new Vector2(3f, 3f), dragEndInfo.Value.delta);
+            Assert.AreEqual(new Vector2(10f, 10f), dragStartInfo.Value.Origin);
+            Assert.AreEqual(new Vector2(13f, 13f), dragEndInfo.Value.Previous);
+            Assert.AreEqual(new Vector2(13f, 13f), dragEndInfo.Value.Current);
 
             Assert.IsFalse(testSet.Enumerator.MoveNext());
         }
