@@ -5,15 +5,27 @@ namespace UnityFinger
 {
     public struct DragInfo
     {
-        public readonly Vector2 prevPosition;
-        public readonly Vector2 position;
-        public readonly Vector2 delta;
+        readonly Vector2 origin;
+        readonly Vector2 previous;
+        readonly Vector2 current;
 
-        public DragInfo(Vector2 prevPosition, Vector2 position, Vector2 delta)
+        public DragInfo(Vector2 origin, Vector2 previous, Vector2 current)
         {
-            this.prevPosition = prevPosition;
-            this.position = position;
-            this.delta = delta;
+            this.origin = origin;
+            this.previous = previous;
+            this.current = current;
+        }
+
+        public Vector2 Origin {
+            get { return origin; }
+        }
+
+        public Vector2 Previous {
+            get { return previous; }
+        }
+
+        public Vector2 Current {
+            get { return current; }
         }
     }
 
@@ -73,7 +85,7 @@ namespace UnityFinger.Observers
                     var moveDelta = currentPosition - origin;
                     if (moveDelta.magnitude > config.DragDistance) {
                         if (!isInvoked) {
-                            listener.OnDragStart(new DragInfo(prevPosition, currentPosition, moveDelta));
+                            listener.OnDragStart(new DragInfo(origin, prevPosition, currentPosition));
                         }
                         isInvoked = true;
                         break;
@@ -92,13 +104,13 @@ namespace UnityFinger.Observers
 
             if (isInvoked) {
                 while (fingerInput.FingerCount > 0) {
-                    listener.OnDrag(new DragInfo(prevPosition, currentPosition, currentPosition - origin));
+                    listener.OnDrag(new DragInfo(origin, prevPosition, currentPosition));
                     prevPosition = currentPosition;
                     currentPosition = fingerInput.GetPosition();
                     yield return Result.InAction;
                 }
 
-                listener.OnDragEnd(new DragInfo(prevPosition, currentPosition, currentPosition - origin));
+                listener.OnDragEnd(new DragInfo(origin, prevPosition, currentPosition));
                 yield return Result.InAction;
             }
         }
