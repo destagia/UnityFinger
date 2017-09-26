@@ -39,7 +39,7 @@ namespace UnityFinger
 
         public override Vector2 GetPosition()
         {
-            return new Vector2(Input.mousePosition.x / Screen.width, Input.mousePosition.y / Screen.height);
+            return new Vector2(Input.mousePosition.x, Input.mousePosition.y);
         }
 
         public override Vector2 GetSecondPosition()

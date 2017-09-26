@@ -84,7 +84,7 @@ namespace UnityFinger
                 throw new System.ArgumentOutOfRangeException(string.Format("Finger id {0} is not in touches", fingerId));
             }
 
-            return new Vector2(touch.Value.position.x / Screen.width, touch.Value.position.y / Screen.height);
+            return new Vector2(touch.Value.position.x, touch.Value.position.y);
         }
 
     }
