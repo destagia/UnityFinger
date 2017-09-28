@@ -1,6 +1,6 @@
-﻿namespace UnityFinger
+﻿namespace UnityFinger.Dispatcher
 {
-    class DispatchedFingerObserverConfig : IFingerObserverConfig
+    public class DispatchedFingerObserverConfig : IFingerObserverConfig
     {
         readonly IFingerObserverConfig config;
         readonly IScreenInputDispatcher dispatcher;

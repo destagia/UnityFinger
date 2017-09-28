@@ -1,8 +1,8 @@
 ﻿using UnityEngine;
 
-namespace UnityFinger
+namespace UnityFinger.Dispatcher
 {
-    class DispatchedScreenInput : IScreenInput
+    public class DispatchedScreenInput : IScreenInput
     {
         readonly IScreenInput input;
         readonly IScreenInputDispatcher dispatcher;
