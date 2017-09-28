@@ -21,17 +21,17 @@ namespace UnityFinger
         /// <summary>
         /// If the enumerator return Result.InAction, it is being focus on
         /// </summary>
-        IEnumerator<Result> selectedCoroutine;
+        IEnumerator<Result> selectedObserver;
 
-        public void AddObserver(IObserverFactory observer)
+        public void AddObserver(IObserverFactory observerFactory)
         {
-            observerFactories.Add(observer);
-            observerFactories.Sort(new ObserverComparer());
+            observerFactories.Add(observerFactory);
+            observerFactories.Sort(new ObserverFactoryComparer());
         }
 
-        public void RemoveObserver(IObserverFactory observer)
+        public void RemoveObserver(IObserverFactory observerFactory)
         {
-            observerFactories.Remove(observer);
+            observerFactories.Remove(observerFactory);
         }
 
         public FingerObserverSupervisor(IScreenInput input, ITimer timer)
@@ -46,11 +46,11 @@ namespace UnityFinger
         {
             if (input.FingerCount == 0) {
                 if (!OnEvent()) {
-                    foreach (var observerCoroutine in observers) {
-                        observerCoroutine.Dispose();
+                    foreach (var observer in observers) {
+                        observer.Dispose();
                     }
 
-                    selectedCoroutine = null;
+                    selectedObserver = null;
                 }
 
                 isFirstOnScreen = true;
@@ -65,8 +65,8 @@ namespace UnityFinger
                 }
                 observers.Clear();
 
-                foreach (var observer in observerFactories) {
-                    observers.Add(observer.GetObserver(input, timer));
+                foreach (var factory in observerFactories) {
+                    observers.Add(factory.GetObserver(input, timer));
                 }
 
                 isFirstOnScreen = false;
@@ -77,22 +77,22 @@ namespace UnityFinger
 
         void OnDestroy()
         {
-            foreach (var observerCoroutine in observers) {
-                observerCoroutine.Dispose();
+            foreach (var observer in observers) {
+                observer.Dispose();
             }
         }
 
         bool OnEvent()
         {
-            if (selectedCoroutine != null) {
-                return selectedCoroutine.MoveNext();
+            if (selectedObserver != null) {
+                return selectedObserver.MoveNext();
             }
 
-            selectedCoroutine = observers.Find(o => o.MoveNext() && o.Current == Result.InAction);
-            return selectedCoroutine != null;
+            selectedObserver = observers.Find(o => o.MoveNext() && o.Current == Result.InAction);
+            return selectedObserver != null;
         }
 
-        class ObserverComparer : IComparer<IObserverFactory>
+        class ObserverFactoryComparer : IComparer<IObserverFactory>
         {
             #region IComparer implementation
 
