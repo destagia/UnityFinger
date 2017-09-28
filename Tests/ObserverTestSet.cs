@@ -3,7 +3,7 @@ using System;
 
 namespace UnityFinger.Test
 {
-    class ObserverTestSet<TObserver> where TObserver : IObserver
+    class ObserverTestSet<TObserver> where TObserver : IObserverFactory
     {
         TestInput input;
         TestTimer timer;

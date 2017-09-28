@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 using UnityEngine.Events;
-using UnityFinger.Observers;
+using UnityFinger.ObserverFactories;
 using UnityFinger.Events;
 
 namespace UnityFinger
@@ -71,14 +71,14 @@ namespace UnityFinger
 
         readonly FingerObserverSupervisor supervisor;
 
-        readonly ScreenObserver screenObserver;
-        readonly TapObserver tapObserver;
-        readonly FlickObserver flickObserver;
-        readonly DragObserver dragObserver;
-        readonly DragObserver ignoreOthersDragObserver;
-        readonly TwoFingersTapObserver twoFingersTapObserver;
-        readonly LongTapObserver longTapObserver;
-        readonly PinchObserver pinchObserver;
+        readonly ScreenObserverFactory screenObserver;
+        readonly TapObserverFactory tapObserver;
+        readonly FlickObserverFactory flickObserver;
+        readonly DragObserverFactory dragObserver;
+        readonly DragObserverFactory ignoreOthersDragObserver;
+        readonly TwoFingersTapObserverFactory twoFingersTapObserver;
+        readonly LongTapObserverFactory longTapObserver;
+        readonly PinchObserverFactory pinchObserver;
 
         readonly PositionEvent onScreen;
         readonly PositionEvent onTap;
@@ -114,24 +114,24 @@ namespace UnityFinger
             onPinchEnd = new VoidEvent();
             pinchEvents = new CompositeEvent(onPinchStart, onPinch, onPinchEnd);
 
-            screenObserver = new ScreenObserver(this);
-            tapObserver = new TapObserver(config, this);
-            flickObserver = new FlickObserver(config, this);
-            dragObserver = new DragObserver(config, this, false);
-            ignoreOthersDragObserver = new DragObserver(config, this, true);
-            twoFingersTapObserver = new TwoFingersTapObserver(config, this);
-            longTapObserver = new LongTapObserver(config, this);
-            pinchObserver = new PinchObserver(config, this);
+            screenObserver = new ScreenObserverFactory(this);
+            tapObserver = new TapObserverFactory(config, this);
+            flickObserver = new FlickObserverFactory(config, this);
+            dragObserver = new DragObserverFactory(config, this, false);
+            ignoreOthersDragObserver = new DragObserverFactory(config, this, true);
+            twoFingersTapObserver = new TwoFingersTapObserverFactory(config, this);
+            longTapObserver = new LongTapObserverFactory(config, this);
+            pinchObserver = new PinchObserverFactory(config, this);
         }
 
-        void RegisterObserver(ICountableEvent countableEvent, IObserver target)
+        void RegisterObserver(ICountableEvent countableEvent, IObserverFactory target)
         {
             if (countableEvent.ListenersCount == 0) {
                 supervisor.AddObserver(target);
             }
         }
 
-        void UnregisterObserver(ICountableEvent countableEvent, IObserver target)
+        void UnregisterObserver(ICountableEvent countableEvent, IObserverFactory target)
         {
             if (countableEvent.ListenersCount == 0) {
                 supervisor.RemoveObserver(target);

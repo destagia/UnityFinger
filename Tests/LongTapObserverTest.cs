@@ -1,5 +1,5 @@
 ﻿using NUnit.Framework;
-using UnityFinger.Observers;
+using UnityFinger.ObserverFactories;
 using UnityEngine;
 using System;
 
@@ -7,7 +7,7 @@ namespace UnityFinger.Test
 {
     class LongTapObserverTest : ILongTapListener
     {
-        ObserverTestSet<LongTapObserver> testSet;
+        ObserverTestSet<LongTapObserverFactory> testSet;
 
         Vector2? position;
 
@@ -16,8 +16,8 @@ namespace UnityFinger.Test
         {
             position = null;
 
-            testSet = new ObserverTestSet<LongTapObserver>();
-            testSet.SetUp(() => new LongTapObserver(new TestConfig(), this));
+            testSet = new ObserverTestSet<LongTapObserverFactory>();
+            testSet.SetUp(() => new LongTapObserverFactory(new TestConfig(), this));
         }
 
         [Test]
