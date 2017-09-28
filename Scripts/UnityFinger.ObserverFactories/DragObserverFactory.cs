@@ -34,7 +34,7 @@ namespace UnityFinger.ObserverFactories
 
         public override int Priority { get { return 300; } }
 
-        public override IEnumerator<Result> GetObserver(IScreenInput input, IReadOnlyTimer timer)
+        public override IEnumerator<Observation> GetObserver(IScreenInput input, IReadOnlyTimer timer)
         {
             // store the position the dragging start
             var origin = input.GetPosition();
@@ -63,10 +63,10 @@ namespace UnityFinger.ObserverFactories
                     }
                 }
 
-                yield return Result.None;
+                yield return Observation.None;
             }
 
-            yield return Result.InAction;
+            yield return Observation.Fired;
 
             if (input.FingerCount > 0) {
                 prevPosition = currentPosition;
@@ -78,11 +78,11 @@ namespace UnityFinger.ObserverFactories
                     Listener.OnDrag(new DragInfo(origin, prevPosition, currentPosition));
                     prevPosition = currentPosition;
                     currentPosition = input.GetPosition();
-                    yield return Result.InAction;
+                    yield return Observation.Fired;
                 }
 
                 Listener.OnDragEnd(new DragInfo(origin, prevPosition, currentPosition));
-                yield return Result.InAction;
+                yield return Observation.Fired;
             }
         }
 

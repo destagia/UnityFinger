@@ -28,14 +28,14 @@ namespace UnityFinger.Test
 
             // While tapping, observer is going on.
             Assert.IsTrue(testSet.Enumerator.MoveNext());
-            Assert.AreEqual(Result.None, testSet.Enumerator.Current);
+            Assert.AreEqual(Observation.None, testSet.Enumerator.Current);
 
             // The duration invoking long tap is 1.0f in TestConfig
             testSet.Timer.ElapsedTime = 2.0f;
 
             // Long tap is invoked
             Assert.IsTrue(testSet.Enumerator.MoveNext());
-            Assert.AreEqual(Result.InAction, testSet.Enumerator.Current);
+            Assert.AreEqual(Observation.Fired, testSet.Enumerator.Current);
             Assert.IsTrue(position.HasValue);
             Assert.AreEqual(new Vector2(5, 5), position.Value);
 
@@ -51,7 +51,7 @@ namespace UnityFinger.Test
 
             // While tapping, observer is going on.
             Assert.IsTrue(testSet.Enumerator.MoveNext());
-            Assert.AreEqual(Result.None, testSet.Enumerator.Current);
+            Assert.AreEqual(Observation.None, testSet.Enumerator.Current);
 
             // finger moved slightly
             testSet.Input.SetPosition(new Vector2(6, 5));
@@ -61,7 +61,7 @@ namespace UnityFinger.Test
 
             // Long tap is invoked
             Assert.IsTrue(testSet.Enumerator.MoveNext());
-            Assert.AreEqual(Result.InAction, testSet.Enumerator.Current);
+            Assert.AreEqual(Observation.Fired, testSet.Enumerator.Current);
             Assert.IsTrue(position.HasValue);
             Assert.AreEqual(new Vector2(6, 5), position.Value);
         }
@@ -74,7 +74,7 @@ namespace UnityFinger.Test
 
             // While tapping, observer is going on.
             Assert.IsTrue(testSet.Enumerator.MoveNext());
-            Assert.AreEqual(Result.None, testSet.Enumerator.Current);
+            Assert.AreEqual(Observation.None, testSet.Enumerator.Current);
 
             // observer continues its task
             testSet.Timer.ElapsedTime = 0.2f;
@@ -100,7 +100,7 @@ namespace UnityFinger.Test
 
             // While tapping, observer is going on.
             Assert.IsTrue(testSet.Enumerator.MoveNext());
-            Assert.AreEqual(Result.None, testSet.Enumerator.Current);
+            Assert.AreEqual(Observation.None, testSet.Enumerator.Current);
 
             // finger moved too much
             testSet.Input.SetPosition(new Vector2(100, 100));

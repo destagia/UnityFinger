@@ -16,12 +16,12 @@ namespace UnityFinger
         /// <summary>
         /// Observing coroutines
         /// </summary>
-        readonly List<IEnumerator<Result>> observers;
+        readonly List<IEnumerator<Observation>> observers;
 
         /// <summary>
         /// If the enumerator return Result.InAction, it is being focus on
         /// </summary>
-        IEnumerator<Result> selectedObserver;
+        IEnumerator<Observation> selectedObserver;
 
         public void AddObserver(IObserverFactory observerFactory)
         {
@@ -39,7 +39,7 @@ namespace UnityFinger
             this.input = input;
             this.timer = timer;
             observerFactories = new List<IObserverFactory>();
-            observers = new List<IEnumerator<Result>>();
+            observers = new List<IEnumerator<Observation>>();
         }
 
         public void Update()
@@ -88,7 +88,7 @@ namespace UnityFinger
                 return selectedObserver.MoveNext();
             }
 
-            selectedObserver = observers.Find(o => o.MoveNext() && o.Current == Result.InAction);
+            selectedObserver = observers.Find(o => o.MoveNext() && o.Current == Observation.Fired);
             return selectedObserver != null;
         }
 

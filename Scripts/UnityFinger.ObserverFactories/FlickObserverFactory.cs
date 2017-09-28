@@ -22,7 +22,7 @@ namespace UnityFinger.ObserverFactories
 
         public override int Priority { get { return 400; } }
         
-        public override IEnumerator<Result> GetObserver(IScreenInput input, IReadOnlyTimer timer)
+        public override IEnumerator<Observation> GetObserver(IScreenInput input, IReadOnlyTimer timer)
         {
             var firstPosition = input.GetPosition();
             var secondPosition = firstPosition;
@@ -32,7 +32,7 @@ namespace UnityFinger.ObserverFactories
                     yield break;
                 }
                 secondPosition = input.GetPosition();
-                yield return Result.None;
+                yield return Observation.None;
             }
 
             if (timer.ElapsedTime > 0.4f) {
@@ -45,7 +45,7 @@ namespace UnityFinger.ObserverFactories
             }
 
             Listener.OnFlick(new FlickInfo(firstPosition, direction));
-            yield return Result.InAction;
+            yield return Observation.Fired;
         }
 
         #endregion

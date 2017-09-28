@@ -26,7 +26,7 @@ namespace UnityFinger.ObserverFactories
 
         public int Priority { get { return 0; } }
 
-        public IEnumerator<Result> GetObserver(IScreenInput input, IReadOnlyTimer timer)
+        public IEnumerator<Observation> GetObserver(IScreenInput input, IReadOnlyTimer timer)
         {
             listener.OnScreen(input.GetPosition());
             yield break;

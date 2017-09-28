@@ -46,13 +46,13 @@ namespace UnityFinger.Test
             testSet.Input.SetPosition(new Vector2(10f, 10f));
 
             Assert.IsTrue(testSet.Enumerator.MoveNext());
-            Assert.AreEqual(Result.None, testSet.Enumerator.Current);
+            Assert.AreEqual(Observation.None, testSet.Enumerator.Current);
 
             testSet.Timer.ElapsedTime = 2.0f;
             testSet.Input.SetPosition(new Vector2(11f, 11f));
 
             Assert.IsTrue(testSet.Enumerator.MoveNext());
-            Assert.AreEqual(Result.InAction, testSet.Enumerator.Current);
+            Assert.AreEqual(Observation.Fired, testSet.Enumerator.Current);
             Assert.IsTrue(dragStartInfo.HasValue);
             Assert.AreEqual(new Vector2(10f, 10f), dragStartInfo.Value.Origin);
             Assert.AreEqual(new Vector2(10f, 10f), dragStartInfo.Value.Previous);
@@ -61,7 +61,7 @@ namespace UnityFinger.Test
             testSet.Input.SetPosition(new Vector2(13f, 13f));
 
             Assert.IsTrue(testSet.Enumerator.MoveNext());
-            Assert.AreEqual(Result.InAction, testSet.Enumerator.Current);
+            Assert.AreEqual(Observation.Fired, testSet.Enumerator.Current);
             Assert.IsTrue(dragInfo.HasValue);
             Assert.AreEqual(new Vector2(10f, 10f), dragStartInfo.Value.Origin);
             Assert.AreEqual(new Vector2(11f, 11f), dragInfo.Value.Previous);
@@ -70,7 +70,7 @@ namespace UnityFinger.Test
             testSet.Input.FingerCount = 0;
 
             Assert.IsTrue(testSet.Enumerator.MoveNext());
-            Assert.AreEqual(Result.InAction, testSet.Enumerator.Current);
+            Assert.AreEqual(Observation.Fired, testSet.Enumerator.Current);
             Assert.IsTrue(dragEndInfo.HasValue);
             Assert.AreEqual(new Vector2(10f, 10f), dragStartInfo.Value.Origin);
             Assert.AreEqual(new Vector2(13f, 13f), dragEndInfo.Value.Previous);

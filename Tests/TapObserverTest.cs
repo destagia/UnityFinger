@@ -32,13 +32,13 @@ namespace UnityFinger.Test
             testSet.Input.SetPosition(new Vector2(5, 5));
 
             Assert.IsTrue(testSet.Enumerator.MoveNext());
-            Assert.AreEqual(Result.None, testSet.Enumerator.Current);
+            Assert.AreEqual(Observation.None, testSet.Enumerator.Current);
 
             // A finger was released from the screen
             testSet.Input.FingerCount = 0;
 
             Assert.IsTrue(testSet.Enumerator.MoveNext());
-            Assert.AreEqual(Result.InAction, testSet.Enumerator.Current);
+            Assert.AreEqual(Observation.Fired, testSet.Enumerator.Current);
 
             Assert.IsTrue(tapPosition.HasValue);
             Assert.AreEqual(new Vector2(5, 5), tapPosition.Value);
@@ -52,19 +52,19 @@ namespace UnityFinger.Test
             testSet.Input.SetPosition(new Vector2(5, 5));
 
             Assert.IsTrue(testSet.Enumerator.MoveNext());
-            Assert.AreEqual(Result.None, testSet.Enumerator.Current);
+            Assert.AreEqual(Observation.None, testSet.Enumerator.Current);
 
             // In the next frame, the finger has moved a little
             testSet.Input.SetPosition(new Vector2(5.1f, 5.1f));
 
             Assert.IsTrue(testSet.Enumerator.MoveNext());
-            Assert.AreEqual(Result.None, testSet.Enumerator.Current);
+            Assert.AreEqual(Observation.None, testSet.Enumerator.Current);
 
             // The finger was released from the screen
             testSet.Input.FingerCount = 0;
 
             Assert.IsTrue(testSet.Enumerator.MoveNext());
-            Assert.AreEqual(Result.InAction, testSet.Enumerator.Current);
+            Assert.AreEqual(Observation.Fired, testSet.Enumerator.Current);
 
             Assert.IsTrue(tapPosition.HasValue);
             Assert.AreEqual(new Vector2(5.1f, 5.1f), tapPosition.Value);
@@ -78,7 +78,7 @@ namespace UnityFinger.Test
             testSet.Input.SetPosition(new Vector2(5, 5));
 
             Assert.IsFalse(testSet.Enumerator.MoveNext());
-            Assert.AreEqual(Result.None, testSet.Enumerator.Current);
+            Assert.AreEqual(Observation.None, testSet.Enumerator.Current);
             Assert.IsFalse(tapPosition.HasValue);
         }
 
@@ -90,7 +90,7 @@ namespace UnityFinger.Test
             testSet.Input.SetPosition(new Vector2(5, 5));
 
             Assert.IsTrue(testSet.Enumerator.MoveNext());
-            Assert.AreEqual(Result.None, testSet.Enumerator.Current);
+            Assert.AreEqual(Observation.None, testSet.Enumerator.Current);
 
             // In the next frame, the finger has moved too much
             testSet.Input.SetPosition(new Vector2(100, 100));
@@ -107,7 +107,7 @@ namespace UnityFinger.Test
             testSet.Input.SetPosition(new Vector2(5, 5));
 
             Assert.IsTrue(testSet.Enumerator.MoveNext());
-            Assert.AreEqual(Result.None, testSet.Enumerator.Current);
+            Assert.AreEqual(Observation.None, testSet.Enumerator.Current);
 
             // It takes too many times
             testSet.Input.FingerCount = 0;

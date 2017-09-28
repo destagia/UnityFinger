@@ -8,7 +8,7 @@ namespace UnityFinger.Test
         TestInput input;
         TestTimer timer;
         TObserver observer;
-        IEnumerator<Result> enumerator;
+        IEnumerator<Observation> enumerator;
 
         public TestInput Input { get { return input; } }
 
@@ -16,7 +16,7 @@ namespace UnityFinger.Test
 
         public TObserver Observer { get { return observer; } }
 
-        public IEnumerator<Result> Enumerator { get { return enumerator; } }
+        public IEnumerator<Observation> Enumerator { get { return enumerator; } }
 
         public void SetUp(Func<TObserver> createObserver)
         {

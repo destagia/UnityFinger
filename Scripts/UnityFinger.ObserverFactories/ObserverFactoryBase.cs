@@ -10,7 +10,7 @@ namespace UnityFinger.ObserverFactories
     {
         public abstract int Priority { get; }
 
-        public abstract IEnumerator<Result> GetObserver(IScreenInput input, IReadOnlyTimer timer);
+        public abstract IEnumerator<Observation> GetObserver(IScreenInput input, IReadOnlyTimer timer);
 
         readonly IFingerObserverConfig config;
         readonly TListener listener;

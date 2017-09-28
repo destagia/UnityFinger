@@ -6,7 +6,7 @@ namespace UnityFinger
     {
         int Priority { get; }
 
-        IEnumerator<Result> GetObserver(IScreenInput input, IReadOnlyTimer timer);
+        IEnumerator<Observation> GetObserver(IScreenInput input, IReadOnlyTimer timer);
     }
 }
 

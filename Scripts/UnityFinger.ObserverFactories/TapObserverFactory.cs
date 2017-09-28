@@ -23,7 +23,7 @@ namespace UnityFinger.ObserverFactories
 
         public override int Priority { get { return 100; } }
 
-        public override IEnumerator<Result> GetObserver(IScreenInput input, IReadOnlyTimer timer)
+        public override IEnumerator<Observation> GetObserver(IScreenInput input, IReadOnlyTimer timer)
         {
             var position = input.GetPosition();
 
@@ -36,7 +36,7 @@ namespace UnityFinger.ObserverFactories
                     yield break;
                 }
                 position = secondPosition;
-                yield return Result.None;
+                yield return Observation.None;
             }
 
             if (timer.ElapsedTime > Config.TapDuration) {
@@ -44,7 +44,7 @@ namespace UnityFinger.ObserverFactories
             }
 
             Listener.OnTap(position);
-            yield return Result.InAction;
+            yield return Observation.Fired;
         }
 
         #endregion

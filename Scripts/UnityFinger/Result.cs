@@ -1,8 +1,8 @@
 ﻿namespace UnityFinger
 {
-    public enum Result
+    public enum Observation
     {
         None,
-        InAction
+        Fired
     }
 }

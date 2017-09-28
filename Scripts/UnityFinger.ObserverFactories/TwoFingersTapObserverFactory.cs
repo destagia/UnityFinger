@@ -23,7 +23,7 @@ namespace UnityFinger.ObserverFactories
 
         public override int Priority { get { return 100; } }
 
-        public override IEnumerator<Result> GetObserver(IScreenInput input, IReadOnlyTimer timer)
+        public override IEnumerator<Observation> GetObserver(IScreenInput input, IReadOnlyTimer timer)
         {
             var first = Vector2.zero;
             var second = Vector2.zero;
@@ -34,12 +34,12 @@ namespace UnityFinger.ObserverFactories
                     yield break;
                 }
                 if (input.FingerCount == 2) {
-                    yield return Result.None;
+                    yield return Observation.None;
                     break;
                 } else if (input.FingerCount > 2) {
                     yield break;
                 }
-                yield return Result.None;
+                yield return Observation.None;
             }
 
             var twofingerInvoke = false;
@@ -51,7 +51,7 @@ namespace UnityFinger.ObserverFactories
                 }
                 first = input.GetPosition();
                 second = input.GetSecondPosition();
-                yield return Result.None;
+                yield return Observation.None;
             }
 
             if (!twofingerInvoke) {
@@ -62,11 +62,11 @@ namespace UnityFinger.ObserverFactories
                 if (timer.ElapsedTime > Config.TwoFingersTapReleaseDuration) {
                     yield break;
                 }
-                yield return Result.None;
+                yield return Observation.None;
             }
 
             Listener.OnTwoFingersTap(new TwoFingersTapInfo(first, second));
-            yield return Result.InAction;
+            yield return Observation.Fired;
         }
 
         #endregion

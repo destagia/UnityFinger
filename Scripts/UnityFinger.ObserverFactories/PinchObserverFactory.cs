@@ -24,7 +24,7 @@ namespace UnityFinger.ObserverFactories
 
         public override int Priority { get { return 100; } }
 
-        public override IEnumerator<Result> GetObserver(IScreenInput input, IReadOnlyTimer timer)
+        public override IEnumerator<Observation> GetObserver(IScreenInput input, IReadOnlyTimer timer)
         {
             Vector2 firstCurrent = Vector2.zero;
             Vector2 secondCurrent = Vector2.zero;
@@ -41,7 +41,7 @@ namespace UnityFinger.ObserverFactories
                 }
 
                 if (input.FingerCount < 2) {
-                    yield return Result.None;
+                    yield return Observation.None;
                 }
 
                 firstCurrent = input.GetPosition();
@@ -55,12 +55,12 @@ namespace UnityFinger.ObserverFactories
 
                 var firstFingerMove = (firstCurrent - firstOrigin).magnitude;
                 if (firstFingerMove < Config.PinchStartDistance) {
-                    yield return Result.None;
+                    yield return Observation.None;
                 }
 
                 var secondFingerMove = (secondCurrent - secondOrigin).magnitude;
                 if (secondFingerMove < Config.PinchStartDistance) {
-                    yield return Result.None;
+                    yield return Observation.None;
                 }
 
                 var first = new DragInfo(firstOrigin, firstOrigin, firstCurrent);
@@ -70,7 +70,7 @@ namespace UnityFinger.ObserverFactories
                 break;
             }
 
-            yield return Result.InAction;
+            yield return Observation.Fired;
 
             Vector2 firstPrevious = firstCurrent;
             Vector2 secondPrevious = secondCurrent;
@@ -89,12 +89,12 @@ namespace UnityFinger.ObserverFactories
                 secondPrevious = secondCurrent;
 
                 invokePinch = true;
-                yield return Result.InAction;
+                yield return Observation.Fired;
             }
 
             if (invokePinch) {
                 Listener.OnPinchEnd();
-                yield return Result.InAction;
+                yield return Observation.Fired;
             }
         }
 

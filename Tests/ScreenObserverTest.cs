@@ -32,7 +32,7 @@ namespace UnityFinger.Test
             Assert.AreEqual(new Vector2(5, 5), testSet.Input.GetPosition());
 
             Assert.IsFalse(testSet.Enumerator.MoveNext());
-            Assert.AreEqual(Result.None, testSet.Enumerator.Current);
+            Assert.AreEqual(Observation.None, testSet.Enumerator.Current);
             Assert.AreEqual(new Vector2(5, 5), position);
         }
     }
