@@ -1,5 +1,5 @@
 using NUnit.Framework;
-using UnityFinger.Observers;
+using UnityFinger.ObserverFactories;
 using UnityEngine;
 using System;
 
@@ -7,7 +7,7 @@ namespace UnityFinger.Test
 {
     class DragObserverTest : IDragListener
     {
-        ObserverTestSet<DragObserver> testSet;
+        ObserverTestSet<DragObserverFactory> testSet;
 
         DragInfo? dragStartInfo;
         DragInfo? dragInfo;
@@ -20,8 +20,8 @@ namespace UnityFinger.Test
             dragInfo = null;
             dragEndInfo = null;
 
-            testSet = new ObserverTestSet<DragObserver>();
-            testSet.SetUp(() => new DragObserver(new TestConfig(), this, false));
+            testSet = new ObserverTestSet<DragObserverFactory>();
+            testSet.SetUp(() => new DragObserverFactory(new TestConfig(), this, false));
         }
 
         void IDragListener.OnDragStart(DragInfo info)

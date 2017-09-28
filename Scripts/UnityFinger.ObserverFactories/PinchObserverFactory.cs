@@ -11,25 +11,20 @@ namespace UnityFinger
     }
 }
 
-namespace UnityFinger.Observers
+namespace UnityFinger.ObserverFactories
 {
-    public class PinchObserver : IObserver
+    public class PinchObserverFactory : ObserverFactoryBase<IPinchListener>
     {
-        readonly IFingerObserverConfig config;
-
-        readonly IPinchListener listener;
-
-        public PinchObserver(IFingerObserverConfig config, IPinchListener listener)
+        public PinchObserverFactory(IFingerObserverConfig config, IPinchListener listener)
+            : base(config, listener)
         {
-            this.config = config;
-            this.listener = listener;
         }
 
-        #region IObserver implementation
+        #region IObserverFactory implementation
 
-        public int Priority { get { return 100; } }
+        public override int Priority { get { return 100; } }
 
-        public IEnumerator<Result> GetObserver(IScreenInput fingerInput, ITimer timer)
+        public override IEnumerator<Result> GetObserver(IScreenInput input, IReadOnlyTimer timer)
         {
             Vector2 firstCurrent = Vector2.zero;
             Vector2 secondCurrent = Vector2.zero;
@@ -39,18 +34,18 @@ namespace UnityFinger.Observers
             Vector2 secondOrigin = Vector2.zero;
 
             // Wait until two fingers are on screen in time
-            while (fingerInput.FingerCount > 0) {
+            while (input.FingerCount > 0) {
 
-                if (fingerInput.FingerCount > 2) {
+                if (input.FingerCount > 2) {
                     yield break;
                 }
 
-                if (fingerInput.FingerCount < 2) {
+                if (input.FingerCount < 2) {
                     yield return Result.None;
                 }
 
-                firstCurrent = fingerInput.GetPosition();
-                secondCurrent = fingerInput.GetSecondPosition();
+                firstCurrent = input.GetPosition();
+                secondCurrent = input.GetSecondPosition();
 
                 if (isFirstFrame) {
                     isFirstFrame = false;
@@ -59,19 +54,19 @@ namespace UnityFinger.Observers
                 }
 
                 var firstFingerMove = (firstCurrent - firstOrigin).magnitude;
-                if (firstFingerMove < config.PinchStartDistance) {
+                if (firstFingerMove < Config.PinchStartDistance) {
                     yield return Result.None;
                 }
 
                 var secondFingerMove = (secondCurrent - secondOrigin).magnitude;
-                if (secondFingerMove < config.PinchStartDistance) {
+                if (secondFingerMove < Config.PinchStartDistance) {
                     yield return Result.None;
                 }
 
                 var first = new DragInfo(firstOrigin, firstOrigin, firstCurrent);
                 var second = new DragInfo(secondOrigin, secondOrigin, secondCurrent);
 
-                listener.OnPinchStart(new PinchInfo(first, second));
+                Listener.OnPinchStart(new PinchInfo(first, second));
                 break;
             }
 
@@ -82,13 +77,13 @@ namespace UnityFinger.Observers
 
             var invokePinch = false;
 
-            while (fingerInput.FingerCount >= 2) {
-                firstCurrent = fingerInput.GetPosition();
-                secondCurrent = fingerInput.GetSecondPosition();
+            while (input.FingerCount >= 2) {
+                firstCurrent = input.GetPosition();
+                secondCurrent = input.GetSecondPosition();
 
                 var first = new DragInfo(firstOrigin, firstPrevious, firstCurrent);
                 var second = new DragInfo(secondOrigin, secondPrevious, secondCurrent);
-                listener.OnPinch(new PinchInfo(first, second));
+                Listener.OnPinch(new PinchInfo(first, second));
 
                 firstPrevious = firstCurrent;
                 secondPrevious = secondCurrent;
@@ -98,7 +93,7 @@ namespace UnityFinger.Observers
             }
 
             if (invokePinch) {
-                listener.OnPinchEnd();
+                Listener.OnPinchEnd();
                 yield return Result.InAction;
             }
         }

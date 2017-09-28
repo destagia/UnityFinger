@@ -1,12 +1,12 @@
 using NUnit.Framework;
-using UnityFinger.Observers;
+using UnityFinger.ObserverFactories;
 using UnityEngine;
 
 namespace UnityFinger.Test
 {
     class TapObserverTest : ITapListener
     {
-        ObserverTestSet<TapObserver> testSet;
+        ObserverTestSet<TapObserverFactory> testSet;
 
         Vector2? tapPosition = null;
 
@@ -15,8 +15,8 @@ namespace UnityFinger.Test
         {
             tapPosition = null;
 
-            testSet = new ObserverTestSet<TapObserver>();
-            testSet.SetUp(() => new TapObserver(new TestConfig(), this));
+            testSet = new ObserverTestSet<TapObserverFactory>();
+            testSet.SetUp(() => new TapObserverFactory(new TestConfig(), this));
         }
 
         void ITapListener.OnTap(Vector2 position)

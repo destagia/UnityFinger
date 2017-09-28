@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace UnityFinger
@@ -11,14 +13,10 @@ namespace UnityFinger
     }
 }
 
-namespace UnityFinger.Observers
+namespace UnityFinger.ObserverFactories
 {
-    public class DragObserver : IObserver
+    public class DragObserverFactory : ObserverFactoryBase<IDragListener>
     {
-        readonly IDragListener listener;
-
-        readonly IFingerObserverConfig config;
-
         /// <summary>
         /// if IgnoreOtherObservers is true, drag events will be fired
         /// even if the callbacks like swipe are registerd.
@@ -26,40 +24,39 @@ namespace UnityFinger.Observers
         /// </summary>
         readonly bool ignoreOtherObservers;
 
-        public DragObserver(IFingerObserverConfig config, IDragListener listener, bool ignoreOtherObservers)
+        public DragObserverFactory(IFingerObserverConfig config, IDragListener listener, bool ignoreOtherObservers)
+            : base(config, listener)
         {
-            this.config = config;
-            this.listener = listener;
             this.ignoreOtherObservers = ignoreOtherObservers;
         }
 
-        #region IObserver implementation
+        #region IObserverFactory implementation
 
-        public int Priority { get { return 300; } }
+        public override int Priority { get { return 300; } }
 
-        public IEnumerator<Result> GetObserver(IScreenInput fingerInput, ITimer timer)
+        public override IEnumerator<Result> GetObserver(IScreenInput input, IReadOnlyTimer timer)
         {
             // store the position the dragging start
-            var origin = fingerInput.GetPosition();
+            var origin = input.GetPosition();
             var prevPosition = origin;
             var currentPosition = origin;
 
             // use isInvoked to garantee the (start)(dragging*)(end) flow
             var isInvoked = false;
 
-            while (fingerInput.FingerCount == 1) {
-                if (fingerInput.FingerCount > 1) {
+            while (input.FingerCount == 1) {
+                if (input.FingerCount > 1) {
                     yield break;
                 }
 
-                if (ignoreOtherObservers || timer.ElapsedTime > config.DragDuration) {
+                if (ignoreOtherObservers || timer.ElapsedTime > Config.DragDuration) {
                     prevPosition = currentPosition;
-                    currentPosition = fingerInput.GetPosition();
+                    currentPosition = input.GetPosition();
 
                     var moveDelta = currentPosition - origin;
-                    if (moveDelta.magnitude > config.DragDistance) {
+                    if (moveDelta.magnitude > Config.DragDistance) {
                         if (!isInvoked) {
-                            listener.OnDragStart(new DragInfo(origin, prevPosition, currentPosition));
+                            Listener.OnDragStart(new DragInfo(origin, prevPosition, currentPosition));
                         }
                         isInvoked = true;
                         break;
@@ -71,20 +68,20 @@ namespace UnityFinger.Observers
 
             yield return Result.InAction;
 
-            if (fingerInput.FingerCount > 0) {
+            if (input.FingerCount > 0) {
                 prevPosition = currentPosition;
-                currentPosition = fingerInput.GetPosition();
+                currentPosition = input.GetPosition();
             }
 
             if (isInvoked) {
-                while (fingerInput.FingerCount > 0) {
-                    listener.OnDrag(new DragInfo(origin, prevPosition, currentPosition));
+                while (input.FingerCount > 0) {
+                    Listener.OnDrag(new DragInfo(origin, prevPosition, currentPosition));
                     prevPosition = currentPosition;
-                    currentPosition = fingerInput.GetPosition();
+                    currentPosition = input.GetPosition();
                     yield return Result.InAction;
                 }
 
-                listener.OnDragEnd(new DragInfo(origin, prevPosition, currentPosition));
+                Listener.OnDragEnd(new DragInfo(origin, prevPosition, currentPosition));
                 yield return Result.InAction;
             }
         }

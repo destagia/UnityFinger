@@ -1,7 +1,5 @@
 ﻿namespace UnityFinger
 {
-    using UnityEngine;
-
     public struct PinchInfo
     {
         readonly DragInfo first;

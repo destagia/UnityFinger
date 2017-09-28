@@ -1,9 +1,12 @@
 ﻿namespace UnityFinger
 {
-    public interface ITimer
+    public interface IReadOnlyTimer
+    {
+        float ElapsedTime { get; }
+    }
+
+    public interface ITimer : IReadOnlyTimer
     {
         void Start();
-
-        float ElapsedTime { get; }
     }
 }

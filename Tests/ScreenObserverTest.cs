@@ -1,12 +1,12 @@
 using NUnit.Framework;
-using UnityFinger.Observers;
+using UnityFinger.ObserverFactories;
 using UnityEngine;
 
 namespace UnityFinger.Test
 {
     class ScreenObserverTest : IScreenListener
     {
-        ObserverTestSet<ScreenObserver> testSet;
+        ObserverTestSet<ScreenObserverFactory> testSet;
 
         Vector2? position;
 
@@ -15,8 +15,8 @@ namespace UnityFinger.Test
         {
             position = null;
 
-            testSet = new ObserverTestSet<ScreenObserver>();
-            testSet.SetUp(() => new ScreenObserver(this));
+            testSet = new ObserverTestSet<ScreenObserverFactory>();
+            testSet.SetUp(() => new ScreenObserverFactory(this));
         }
 
         void IScreenListener.OnScreen(Vector2 position)

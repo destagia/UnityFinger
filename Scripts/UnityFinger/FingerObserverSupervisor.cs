@@ -11,46 +11,42 @@ namespace UnityFinger
 
         readonly ITimer timer;
 
-        readonly List<IObserver> observers;
+        readonly List<IObserverFactory> observerFactories;
 
         /// <summary>
         /// Observing coroutines
         /// </summary>
-        readonly List<IEnumerator<Result>> observerCoroutines;
+        readonly List<IEnumerator<Result>> observers;
 
         /// <summary>
         /// If the enumerator return Result.InAction, it is being focus on
         /// </summary>
         IEnumerator<Result> selectedCoroutine;
 
-        public void AddObserver(IObserver observer)
+        public void AddObserver(IObserverFactory observer)
         {
-            observers.Add(observer);
-            observers.Sort(new ObserverComparer());
+            observerFactories.Add(observer);
+            observerFactories.Sort(new ObserverComparer());
         }
 
-        public void RemoveObserver(IObserver observer)
+        public void RemoveObserver(IObserverFactory observer)
         {
-            observers.Remove(observer);
-        }
-
-        public FingerObserverSupervisor(IScreenInput input) : this(input, new Timer())
-        {
+            observerFactories.Remove(observer);
         }
 
         public FingerObserverSupervisor(IScreenInput input, ITimer timer)
         {
             this.input = input;
             this.timer = timer;
-            observers = new List<IObserver>();
-            observerCoroutines = new List<IEnumerator<Result>>();
+            observerFactories = new List<IObserverFactory>();
+            observers = new List<IEnumerator<Result>>();
         }
 
         public void Update()
         {
             if (input.FingerCount == 0) {
                 if (!OnEvent()) {
-                    foreach (var observerCoroutine in observerCoroutines) {
+                    foreach (var observerCoroutine in observers) {
                         observerCoroutine.Dispose();
                     }
 
@@ -64,13 +60,13 @@ namespace UnityFinger
             if (isFirstOnScreen) {
                 timer.Start();
 
-                foreach (var observer in observerCoroutines) {
+                foreach (var observer in observers) {
                     observer.Dispose();
                 }
-                observerCoroutines.Clear();
+                observers.Clear();
 
-                foreach (var observer in observers) {
-                    observerCoroutines.Add(observer.GetObserver(input, timer));
+                foreach (var observer in observerFactories) {
+                    observers.Add(observer.GetObserver(input, timer));
                 }
 
                 isFirstOnScreen = false;
@@ -81,7 +77,7 @@ namespace UnityFinger
 
         void OnDestroy()
         {
-            foreach (var observerCoroutine in observerCoroutines) {
+            foreach (var observerCoroutine in observers) {
                 observerCoroutine.Dispose();
             }
         }
@@ -92,15 +88,15 @@ namespace UnityFinger
                 return selectedCoroutine.MoveNext();
             }
 
-            selectedCoroutine = observerCoroutines.Find(o => o.MoveNext() && o.Current == Result.InAction);
+            selectedCoroutine = observers.Find(o => o.MoveNext() && o.Current == Result.InAction);
             return selectedCoroutine != null;
         }
 
-        class ObserverComparer : IComparer<IObserver>
+        class ObserverComparer : IComparer<IObserverFactory>
         {
             #region IComparer implementation
 
-            public int Compare(IObserver x, IObserver y)
+            public int Compare(IObserverFactory x, IObserverFactory y)
             {
                 return x.Priority - y.Priority;
             }

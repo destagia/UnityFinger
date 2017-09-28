@@ -41,6 +41,7 @@
     <Compile Include="Tests\FingerEventManagerTest.cs" />
     <Compile Include="Tests\LongTapObserverTest.cs" />
     <Compile Include="Tests\ObserverTestSet.cs" />
+    <Compile Include="Tests\ScreenInputDispatcherTest.cs" />
     <Compile Include="Tests\ScreenObserverTest.cs" />
     <Compile Include="Tests\TapObserverTest.cs" />
     <Compile Include="Tests\TestConfig.cs" />
