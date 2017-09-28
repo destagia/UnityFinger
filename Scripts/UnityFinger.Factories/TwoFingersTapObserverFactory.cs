@@ -10,7 +10,7 @@ namespace UnityFinger
     }
 }
 
-namespace UnityFinger.ObserverFactories
+namespace UnityFinger.Factories
 {
     public class TwoFingersTapObserverFactory : ObserverFactoryBase<ITwoFingersListener>
     {

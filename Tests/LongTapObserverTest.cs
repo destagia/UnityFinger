@@ -1,5 +1,5 @@
 ﻿using NUnit.Framework;
-using UnityFinger.ObserverFactories;
+using UnityFinger.Factories;
 using UnityEngine;
 using System;
 

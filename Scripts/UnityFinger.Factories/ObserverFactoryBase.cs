@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace UnityFinger.ObserverFactories
+namespace UnityFinger.Factories
 {
     public abstract class ObserverFactoryBase<TListener> : IObserverFactory
     {

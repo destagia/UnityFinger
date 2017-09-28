@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 using UnityEngine.Events;
-using UnityFinger.ObserverFactories;
+using UnityFinger.Factories;
 using UnityFinger.Events;
 
 namespace UnityFinger

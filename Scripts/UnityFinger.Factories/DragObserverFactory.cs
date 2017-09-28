@@ -13,7 +13,7 @@ namespace UnityFinger
     }
 }
 
-namespace UnityFinger.ObserverFactories
+namespace UnityFinger.Factories
 {
     public class DragObserverFactory : ObserverFactoryBase<IDragListener>
     {
