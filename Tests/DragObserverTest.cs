@@ -21,7 +21,7 @@ namespace UnityFinger.Test
             dragEndInfo = null;
 
             testSet = new ObserverTestSet<DragObserverFactory>();
-            testSet.SetUp(() => new DragObserverFactory(new TestConfig(), this, false));
+            testSet.SetUp(() => new DragObserverFactory(new TestConfig(), this));
         }
 
         void IDragListener.OnDragStart(DragInfo info)

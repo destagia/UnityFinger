@@ -10,6 +10,9 @@ namespace UnityFinger.Test
         public float DragDistance {
             get { return 1.0f; }
         }
+        public DragOptionFlag DragOptionFlag {
+            get { return DragOptionFlag.None; }
+        }
         public float FlickDistance {
             get { return 1.0f; }
         }
