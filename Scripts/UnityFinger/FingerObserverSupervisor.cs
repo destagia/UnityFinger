@@ -37,8 +37,17 @@ namespace UnityFinger
             observerFactories.Remove(observerFactory);
         }
 
+        public FingerObserverSupervisor(IScreenInput input)
+            : this(input, null)
+        {
+        }
+
         public FingerObserverSupervisor(IScreenInput input, ITimer timer)
         {
+            if (timer == null) {
+                timer = new Timer();
+            }
+
             this.input = input;
             this.timer = timer;
             observerFactories = new List<IObserverFactory>();
