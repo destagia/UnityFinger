@@ -11,23 +11,54 @@ namespace UnityFinger
         void OnDrag(DragInfo info);
         void OnDragEnd(DragInfo info);
     }
+
+    [Flags]
+    public enum DragOptionFlag
+    {
+        /// <summary>
+        /// Nothing special
+        /// </summary>
+        None = 0x000,
+
+        /// <summary>
+        /// Does't wait for finger moving
+        /// </summary>
+        Immediate = 0x001,
+
+        /// <summary>
+        /// if IgnoreOtherObservers is true, drag events will be fired
+        /// even if the callbacks like swipe are registerd.
+        /// it means that drag starts immediately! swipe event will never be fired.
+        /// </summary>
+        IgnoreOthers = 0x002,
+    }
 }
 
 namespace UnityFinger.Factories
 {
     public class DragObserverFactory : ObserverFactoryBase<IDragListener>
     {
-        /// <summary>
-        /// if IgnoreOtherObservers is true, drag events will be fired
-        /// even if the callbacks like swipe are registerd.
-        /// it means that drag starts immediately! swipe event will never be fired.
-        /// </summary>
-        readonly bool ignoreOtherObservers;
+        class DragOption
+        {
+            readonly DragOptionFlag flag;
 
-        public DragObserverFactory(IFingerObserverConfig config, IDragListener listener, bool ignoreOtherObservers)
+            public DragOption(DragOptionFlag flag)
+            {
+                this.flag = flag;
+            }
+
+            public bool IgnoreOthers {
+                get { return (flag & DragOptionFlag.IgnoreOthers) != 0; }
+            }
+
+            public bool Immediate {
+                get { return (flag & DragOptionFlag.IgnoreOthers) != 0; }
+            }
+        }
+
+        public DragObserverFactory(IFingerObserverConfig config, IDragListener listener)
             : base(config, listener)
         {
-            this.ignoreOtherObservers = ignoreOtherObservers;
         }
 
         #region IObserverFactory implementation
@@ -36,6 +67,8 @@ namespace UnityFinger.Factories
 
         public override IEnumerator<Observation> GetObserver(IScreenInput input, IReadOnlyTimer timer)
         {
+            var option = new DragOption(Config.DragOptionFlag);
+
             // store the position the dragging start
             var origin = input.GetPosition();
             var prevPosition = origin;
@@ -49,13 +82,13 @@ namespace UnityFinger.Factories
                 prevPosition = currentPosition;
                 currentPosition = input.GetPosition();
 
-                if (!ignoreOtherObservers && timer.ElapsedTime < Config.DragDuration) {
+                if (option.IgnoreOthers && timer.ElapsedTime < Config.DragDuration) {
                     yield return Observation.None;
                     continue;
                 }
 
                 var moveDelta = currentPosition - origin;
-                if (moveDelta.magnitude < Config.DragDistance) {
+                if (!option.Immediate && moveDelta.magnitude < Config.DragDistance) {
                     yield return Observation.None;
                     continue;
                 }

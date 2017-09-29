@@ -4,6 +4,7 @@
     {
         float DragDuration { get; }
         float DragDistance { get; }
+        DragOptionFlag DragOptionFlag { get;  }
 
         float FlickDistance { get; }
 

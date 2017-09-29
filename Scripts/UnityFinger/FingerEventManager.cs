@@ -75,7 +75,6 @@ namespace UnityFinger
         readonly TapObserverFactory tapObserver;
         readonly FlickObserverFactory flickObserver;
         readonly DragObserverFactory dragObserver;
-        readonly DragObserverFactory ignoreOthersDragObserver;
         readonly TwoFingersTapObserverFactory twoFingersTapObserver;
         readonly LongTapObserverFactory longTapObserver;
         readonly PinchObserverFactory pinchObserver;
@@ -117,8 +116,7 @@ namespace UnityFinger
             screenObserver = new ScreenObserverFactory(this);
             tapObserver = new TapObserverFactory(config, this);
             flickObserver = new FlickObserverFactory(config, this);
-            dragObserver = new DragObserverFactory(config, this, false);
-            ignoreOthersDragObserver = new DragObserverFactory(config, this, true);
+            dragObserver = new DragObserverFactory(config, this);
             twoFingersTapObserver = new TwoFingersTapObserverFactory(config, this);
             longTapObserver = new LongTapObserverFactory(config, this);
             pinchObserver = new PinchObserverFactory(config, this);
@@ -172,18 +170,6 @@ namespace UnityFinger
         {
             onDrag.RemoveListener(action);
             UnregisterObserver(dragEvents, dragObserver);
-        }
-
-        public void AddOnIgnoreOthersDragListener(UnityAction<DragInfo> action)
-        {
-            RegisterObserver(ignoreOthersDragEvents, ignoreOthersDragObserver);
-            onDrag.AddListener(action);
-        }
-
-        public void RemoveOnIgnoreOthersDragListener(UnityAction<DragInfo> action)
-        {
-            onDrag.RemoveListener(action);
-            UnregisterObserver(ignoreOthersDragEvents, ignoreOthersDragObserver);
         }
 
         public void AddOnDragEndListener(UnityAction<DragInfo> action)
