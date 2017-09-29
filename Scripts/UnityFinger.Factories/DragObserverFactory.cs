@@ -41,49 +41,43 @@ namespace UnityFinger.Factories
             var prevPosition = origin;
             var currentPosition = origin;
 
-            // use isInvoked to garantee the (start)(dragging*)(end) flow
-            var isInvoked = false;
-
             while (input.FingerCount == 1) {
                 if (input.FingerCount > 1) {
                     yield break;
                 }
 
-                if (ignoreOtherObservers || timer.ElapsedTime > Config.DragDuration) {
-                    prevPosition = currentPosition;
-                    currentPosition = input.GetPosition();
-
-                    var moveDelta = currentPosition - origin;
-                    if (moveDelta.magnitude > Config.DragDistance) {
-                        if (!isInvoked) {
-                            Listener.OnDragStart(new DragInfo(origin, prevPosition, currentPosition));
-                        }
-                        isInvoked = true;
-                        break;
-                    }
-                }
-
-                yield return Observation.None;
-            }
-
-            yield return Observation.Fired;
-
-            if (input.FingerCount > 0) {
                 prevPosition = currentPosition;
                 currentPosition = input.GetPosition();
-            }
 
-            if (isInvoked) {
-                while (input.FingerCount > 0) {
-                    Listener.OnDrag(new DragInfo(origin, prevPosition, currentPosition));
-                    prevPosition = currentPosition;
-                    currentPosition = input.GetPosition();
-                    yield return Observation.Fired;
+                if (!ignoreOtherObservers && timer.ElapsedTime < Config.DragDuration) {
+                    yield return Observation.None;
+                    continue;
                 }
 
-                Listener.OnDragEnd(new DragInfo(origin, prevPosition, currentPosition));
+                var moveDelta = currentPosition - origin;
+                if (moveDelta.magnitude < Config.DragDistance) {
+                    yield return Observation.None;
+                    continue;
+                }
+
+                Listener.OnDragStart(new DragInfo(origin, prevPosition, currentPosition));
+                yield return Observation.Fired;
+                break;
+            }
+
+            while (input.FingerCount > 0) {
+                prevPosition = currentPosition;
+                currentPosition = input.GetPosition();
+
+                Listener.OnDrag(new DragInfo(origin, prevPosition, currentPosition));
                 yield return Observation.Fired;
             }
+
+            prevPosition = currentPosition;
+            currentPosition = input.GetPosition();
+
+            Listener.OnDragEnd(new DragInfo(origin, prevPosition, currentPosition));
+            yield return Observation.Fired;
         }
 
         #endregion

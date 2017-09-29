@@ -11,15 +11,18 @@ namespace UnityFinger
 
         readonly ITimer timer;
 
+        /// <summary>
+        /// Observer factories
+        /// </summary>
         readonly List<IObserverFactory> observerFactories;
 
         /// <summary>
-        /// Observing coroutines
+        /// Executed observers
         /// </summary>
         readonly List<IEnumerator<Observation>> observers;
 
         /// <summary>
-        /// If the enumerator return Result.InAction, it is being focus on
+        /// If the enumerator returned Observation.Fired, it will be focused on
         /// </summary>
         IEnumerator<Observation> selectedObserver;
 
