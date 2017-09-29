@@ -52,7 +52,7 @@ namespace UnityFinger.Factories
             }
 
             public bool Immediate {
-                get { return (flag & DragOptionFlag.IgnoreOthers) != 0; }
+                get { return (flag & DragOptionFlag.Immediate) != 0; }
             }
         }
 
@@ -82,7 +82,7 @@ namespace UnityFinger.Factories
                 prevPosition = currentPosition;
                 currentPosition = input.GetPosition();
 
-                if (option.IgnoreOthers && timer.ElapsedTime < Config.DragDuration) {
+                if (!option.IgnoreOthers && timer.ElapsedTime < Config.DragDuration) {
                     yield return Observation.None;
                     continue;
                 }
