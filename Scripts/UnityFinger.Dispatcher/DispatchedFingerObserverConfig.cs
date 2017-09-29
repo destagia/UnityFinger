@@ -23,6 +23,10 @@
             }
         }
 
+        public DragOptionFlag DragOptionFlag {
+            get { return config.DragOptionFlag; }
+        }
+
         public float FlickDistance {
             get {
                 var distance = config.FlickDistance;

@@ -1,9 +1,12 @@
-﻿namespace UnityFinger
+﻿using System;
+
+namespace UnityFinger
 {
     public class DefaultFingerObserverConfig : IFingerObserverConfig
     {
         public virtual float DragDuration { get { return 0.15f; } }
         public virtual float DragDistance { get { return 60f; } }
+        public virtual DragOptionFlag DragOptionFlag { get { return DragOptionFlag.None; } }
 
         public virtual float FlickDistance { get { return 60f; } }
 
