@@ -116,5 +116,12 @@ namespace UnityFinger.Test
             Assert.IsTrue(testSet.Enumerator.MoveNext());
             Assert.AreEqual(Observation.None, testSet.Enumerator.Current);
         }
+
+        [Test]
+        public void FailsIfOverTwoFingers()
+        {
+            testSet.Input.FingerCount = 3;
+            Assert.IsFalse(testSet.Enumerator.MoveNext());
+        }
     }
 }
