@@ -50,6 +50,7 @@
     <Compile Include="Tests\TestConfig.cs" />
     <Compile Include="Tests\TestInput.cs" />
     <Compile Include="Tests\TestTimer.cs" />
+    <Compile Include="Tests\PinchObserverTest.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

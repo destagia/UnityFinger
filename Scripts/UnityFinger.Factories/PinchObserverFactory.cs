@@ -41,7 +41,6 @@ namespace UnityFinger.Factories
                 }
 
                 if (input.FingerCount < 2) {
-                    yield return Observation.None;
                     continue;
                 }
 
@@ -57,11 +56,13 @@ namespace UnityFinger.Factories
                 var firstFingerMove = (firstCurrent - firstOrigin).magnitude;
                 if (firstFingerMove < Config.PinchStartDistance) {
                     yield return Observation.None;
+                    continue;
                 }
 
                 var secondFingerMove = (secondCurrent - secondOrigin).magnitude;
                 if (secondFingerMove < Config.PinchStartDistance) {
                     yield return Observation.None;
+                    continue;
                 }
 
                 var first = new DragInfo(firstOrigin, firstOrigin, firstCurrent);
