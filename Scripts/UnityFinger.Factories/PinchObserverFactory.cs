@@ -34,7 +34,7 @@ namespace UnityFinger.Factories
             Vector2 secondOrigin = Vector2.zero;
 
             // Wait until two fingers are on screen in time
-            while (input.FingerCount > 0) {
+            while (true) {
 
                 if (input.FingerCount > 2) {
                     yield break;
@@ -42,6 +42,7 @@ namespace UnityFinger.Factories
 
                 if (input.FingerCount < 2) {
                     yield return Observation.None;
+                    continue;
                 }
 
                 firstCurrent = input.GetPosition();
