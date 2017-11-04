@@ -74,7 +74,12 @@ namespace UnityFinger.Factories
             var prevPosition = origin;
             var currentPosition = origin;
 
-            while (input.FingerCount == 1) {
+            // wait for a finger begin on the screen
+            while (input.FingerCount < 1) {
+                yield return Observation.None;
+            }
+
+            while (true) {
                 if (input.FingerCount > 1) {
                     yield break;
                 }
@@ -93,6 +98,10 @@ namespace UnityFinger.Factories
                     continue;
                 }
 
+                if (input.FingerCount != 1) {
+                    yield break;
+                }
+
                 Listener.OnDragStart(new DragInfo(origin, prevPosition, currentPosition));
                 yield return Observation.Fired;
                 break;
@@ -105,9 +114,6 @@ namespace UnityFinger.Factories
                 Listener.OnDrag(new DragInfo(origin, prevPosition, currentPosition));
                 yield return Observation.Fired;
             }
-
-            prevPosition = currentPosition;
-            currentPosition = input.GetPosition();
 
             Listener.OnDragEnd(new DragInfo(origin, prevPosition, currentPosition));
             yield return Observation.Fired;
