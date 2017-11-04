@@ -85,5 +85,36 @@ namespace UnityFinger.Test
 
             Assert.IsFalse(testSet.Enumerator.MoveNext());
         }
+
+        [Test]
+        public void FailsIfFingerDoesntMove()
+        {
+            // simulate two fingers are on the screen
+            testSet.Input.FingerCount = 2;
+            testSet.Input.SetPosition(new Vector2(10f, 20f));
+            testSet.Input.SetSecondPosition(new Vector2(30f, 40f));
+
+            Assert.IsTrue(testSet.Enumerator.MoveNext());
+            Assert.AreEqual(Observation.None, testSet.Enumerator.Current);
+
+            // It doesn't matter if time pasted
+            testSet.Timer.ElapsedTime = 10f;
+
+            Assert.IsTrue(testSet.Enumerator.MoveNext());
+            Assert.AreEqual(Observation.None, testSet.Enumerator.Current);
+
+            // It doesn't matter if finger moved so slightly
+            testSet.Input.SetPosition(new Vector2(10.001f, 20.001f));
+            testSet.Input.SetPosition(new Vector2(30.001f, 40.001f));
+
+            Assert.IsTrue(testSet.Enumerator.MoveNext());
+            Assert.AreEqual(Observation.None, testSet.Enumerator.Current);
+
+            // It doesn't matter if one of the finger moved
+            testSet.Input.SetPosition(new Vector2(1000f, 2000f));
+
+            Assert.IsTrue(testSet.Enumerator.MoveNext());
+            Assert.AreEqual(Observation.None, testSet.Enumerator.Current);
+        }
     }
 }
