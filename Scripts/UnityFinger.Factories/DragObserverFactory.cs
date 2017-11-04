@@ -9,7 +9,7 @@ namespace UnityFinger
     {
         void OnDragStart(DragInfo info);
         void OnDrag(DragInfo info);
-        void OnDragEnd(DragInfo info);
+        void OnDragEnd();
     }
 
     [Flags]
@@ -115,7 +115,7 @@ namespace UnityFinger.Factories
                 yield return Observation.Fired;
             }
 
-            Listener.OnDragEnd(new DragInfo(origin, prevPosition, currentPosition));
+            Listener.OnDragEnd();
             yield return Observation.Fired;
         }
 

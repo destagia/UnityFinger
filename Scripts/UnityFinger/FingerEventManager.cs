@@ -34,9 +34,9 @@ namespace UnityFinger
             onDrag.Invoke(info);
         }
 
-        void IDragListener.OnDragEnd(DragInfo info)
+        void IDragListener.OnDragEnd()
         {
-            onDragEnd.Invoke(info);
+            onDragEnd.Invoke();
         }
 
         void IFlickListener.OnFlick(FlickInfo info)
@@ -84,9 +84,8 @@ namespace UnityFinger
         readonly FlickEvent onFlick;
         readonly DragEvent onDragStart;
         readonly DragEvent onDrag;
-        readonly DragEvent onDragEnd;
+        readonly VoidEvent onDragEnd;
         readonly CompositeEvent dragEvents;
-        readonly CompositeEvent ignoreOthersDragEvents;
         readonly TwoFingersEvent onTwoFingersTap;
         readonly PositionEvent onLongTap;
         readonly PinchEvent onPinchStart;
@@ -103,9 +102,8 @@ namespace UnityFinger
             onFlick = new FlickEvent();
             onDragStart = new DragEvent();
             onDrag = new DragEvent();
-            onDragEnd = new DragEvent();
+            onDragEnd = new VoidEvent();
             dragEvents = new CompositeEvent(onDragStart, onDrag, onDragEnd);
-            ignoreOthersDragEvents = new CompositeEvent(onDragStart, onDrag, onDragEnd);
             onTwoFingersTap = new TwoFingersEvent();
             onLongTap = new PositionEvent();
             onPinchStart = new PinchEvent();
@@ -172,13 +170,13 @@ namespace UnityFinger
             UnregisterObserver(dragEvents, dragObserver);
         }
 
-        public void AddOnDragEndListener(UnityAction<DragInfo> action)
+        public void AddOnDragEndListener(UnityAction action)
         {
             RegisterObserver(dragEvents, dragObserver);
             onDragEnd.AddListener(action);
         }
 
-        public void RemoveOnDragEndListener(UnityAction<DragInfo> action)
+        public void RemoveOnDragEndListener(UnityAction action)
         {
             onDragEnd.RemoveListener(action);
             UnregisterObserver(dragEvents, dragObserver);

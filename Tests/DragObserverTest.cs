@@ -9,14 +9,14 @@ namespace UnityFinger.Test
     {
         DragInfo? dragStartInfo;
         DragInfo? dragInfo;
-        DragInfo? dragEndInfo;
+        bool dragEnd;
 
         [SetUp]
         public void SetUp()
         {
             dragStartInfo = null;
             dragInfo = null;
-            dragEndInfo = null;
+            dragEnd = false;
         }
 
         ObserverTestSet<DragObserverFactory> SetUpTestSet(DragOptionFlag optionFlag)
@@ -40,9 +40,9 @@ namespace UnityFinger.Test
             dragInfo = info;
         }
 
-        void IDragListener.OnDragEnd(DragInfo info)
+        void IDragListener.OnDragEnd()
         {
-            dragEndInfo = info;
+            dragEnd = true;
         }
 
         [Test]
@@ -71,7 +71,7 @@ namespace UnityFinger.Test
             Assert.IsTrue(testSet.Enumerator.MoveNext());
             Assert.AreEqual(Observation.Fired, testSet.Enumerator.Current);
             Assert.IsTrue(dragInfo.HasValue);
-            Assert.AreEqual(new Vector2(10f, 10f), dragStartInfo.Value.Origin);
+            Assert.AreEqual(new Vector2(10f, 10f), dragInfo.Value.Origin);
             Assert.AreEqual(new Vector2(11f, 11f), dragInfo.Value.Previous);
             Assert.AreEqual(new Vector2(13f, 13f), dragInfo.Value.Current);
 
@@ -79,10 +79,7 @@ namespace UnityFinger.Test
 
             Assert.IsTrue(testSet.Enumerator.MoveNext());
             Assert.AreEqual(Observation.Fired, testSet.Enumerator.Current);
-            Assert.IsTrue(dragEndInfo.HasValue);
-            Assert.AreEqual(new Vector2(10f, 10f), dragStartInfo.Value.Origin);
-            Assert.AreEqual(new Vector2(13f, 13f), dragEndInfo.Value.Previous);
-            Assert.AreEqual(new Vector2(13f, 13f), dragEndInfo.Value.Current);
+            Assert.IsTrue(dragEnd);
 
             Assert.IsFalse(testSet.Enumerator.MoveNext());
         }
@@ -179,15 +176,21 @@ namespace UnityFinger.Test
             Assert.IsTrue(testSet.Enumerator.MoveNext());
             Assert.AreEqual(Observation.None, testSet.Enumerator.Current);
 
-            // time elapsed over DragDuration, but finger didn't move
+            // finger has moved slightly
+            testSet.Input.SetPosition(new Vector2(10.1f, 10.1f));
+            Assert.IsTrue(testSet.Enumerator.MoveNext());
+            Assert.AreEqual(Observation.None, testSet.Enumerator.Current);
+
+            // time elapsed over DragDuration, and finger has moved slightly again
+            testSet.Input.SetPosition(new Vector2(10.2f, 10.2f));
             testSet.Timer.ElapsedTime = 2.0f;
 
             Assert.IsTrue(testSet.Enumerator.MoveNext());
             Assert.AreEqual(Observation.Fired, testSet.Enumerator.Current);
             Assert.IsTrue(dragStartInfo.HasValue);
             Assert.AreEqual(new Vector2(10f, 10f), dragStartInfo.Value.Origin);
-            Assert.AreEqual(new Vector2(10f, 10f), dragStartInfo.Value.Previous);
-            Assert.AreEqual(new Vector2(10f, 10f), dragStartInfo.Value.Current);
+            Assert.AreEqual(new Vector2(10.1f, 10.1f), dragStartInfo.Value.Previous);
+            Assert.AreEqual(new Vector2(10.2f, 10.2f), dragStartInfo.Value.Current);
         }
 
         [Test]
