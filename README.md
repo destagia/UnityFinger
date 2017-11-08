@@ -31,7 +31,7 @@ For observing it, the each observer needs the reference for `IScreenInput`.
 I implemented the some classes implementing `IScreenInput`.
 
 - `EditorInput` for UnityEditor
-- `MobileInput` for deploing onto mobile
+- `MobileInput` for using on the mobile
 
 `FingerObserverSupervisor` requires the any `IScreenInput` instance for its intialization.
 
